@@ -1,5 +1,5 @@
 //make prompt g-g coincidence matrix.
-//gg.C
+//root -l gg.C
 #include <iostream>
 #include <sstream>
 #include "TString.h"
@@ -11,9 +11,9 @@
 #include "TTree.h"
 #include "TChain.h"
 
-TString rootfile="../../decay46_123_all.root";//input
-TString ggfile="43_123gg.root";//output
-void makeggmat(TString rootfile="../decay46_123_all.root")
+TString rootfile="../../decay46_123_all.root";//name of input ROOT file
+TString ggfile="43_123gg.root";//name of output file
+void makeggmat()
 {
   cout<<"Generate gg matix to ["<<ggfile<<"] from ["<<rootfile<<"]"<<endl;
   TFile *fin=TFile::Open(rootfile);
