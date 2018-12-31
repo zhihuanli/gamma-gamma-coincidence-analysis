@@ -1,9 +1,14 @@
 
-makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
-Usage: root -l makeggmat.C
-Input file: 
+### makeggmat.C
+#### makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
+
+#### Usage: root -l makeggmat.C
+
+#### Input file: 
  Includes two branches of two dimensional gamma-gamma: caxe[hit] and caye[hit].
- Those two branches are generated from original gamma events (ae[idet], at[idet], idet= number of det) by the following way: 
+ 
+ Those two branches are generated from original gamma events (ae[idet], at[idet], idet= number of det) by the following way:
+ ```cpp
             int hit=0;
             for(int i=0;i<idet;i++) {
               for(int j=0;j<idet;j++) {
@@ -16,8 +21,11 @@ Input file:
                 hit++;
                }
              }
-makeggmat.C:
+ ```   
+#### makeggmat.C:
 Following lines in the code should be modified by user
+
+ ```cpp
  TString rootfile="../../decay46_123_all.root"; // Name of input file
  TString ggfile="43_123gg.root"; // Name of output file
  ......
@@ -25,4 +33,4 @@ Following lines in the code should be modified by user
  TString scut0="abs(caxt-cayt)<200&&decaytime<200"; 
  //make gg 2D histogram 
  tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
-
+ ```
