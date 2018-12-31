@@ -32,6 +32,19 @@ Following lines in the code should be modified by user
  tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
  ```
 ## gg.C - gamma-gamma analysis for prompt gg symptotic matix
+#### original parameter setting 
+ ```cpp
+//range of histogram, it can be modified by setxrange(xmin,xmax); 
+int xmin=0;
+int xmax=3000;
+//number of marked peaks in the spectrum, it can be modified by setnpeaks(npeaks); 
+int npeaks=30;
+//range of gate, gate width:ge+dge1 - ge+dge2, it can be modified by setgatewidth(dge1,dge2)
+int dge1=-3;
+int dge2=3;
+//Name of input file
+TString fname="46_123gg.root";
+```
 #### usage: root -l ge.C 
  ```cpp
 // Draw a gated spectrum to a new canvas.
