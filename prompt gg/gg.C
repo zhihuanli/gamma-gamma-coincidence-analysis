@@ -1,15 +1,3 @@
-//gamma-gamma analysis for prompt gg symptotic matix
-//usage:
-//root -l ge.C //load root file and draw xtpj and ytpj.
-//--ex.1
-//newcanvas(2) -- create a cavas with (1,2)
-//g(132,1) -- fill gate_132 to 1st. window of the canvas
-//g(152,2) -- fill gate_152 to 2nd. window of the canvas
-//--ex.2
-//newcanvas() -- create a canvas with (1,1)
-//g(132) -- fill gate_132 to the canvas
-//--ex.3
-//g(123) -- fill gate_123 to current canvas.
 
 int xmin=0;
 int xmax=3000;//range for hist
@@ -23,8 +11,11 @@ void setxrange(int xmin1=0, int xmax1=4000) {xmin=xmin1;xmax=xmax1;};
 void setnpeaks(int npeaks1=30) {npeaks=npeaks1;};
 void setpeakwidth(double dgea=-3,double dgeb=3) {dge1=dgea;dge2=dgeb;};
 void newcanvas(int ncy=1);
+void tpjm();
 void tpj(int icy=1);
 void g(double ge,int icy=1);
+void gm(double ge1,double ge2=0,double ge3=0,double ge4=0,
+	double ge5=0,double ge6=0);//draw multi peaks in a canvas , up to six peaks.
 void peaks(TH1 *h, Double_t thres=0.05,int backsub=1);
 
 
@@ -39,8 +30,10 @@ int ih=0;
 
 void gg()
 {
-  if(f==NULL) f=new TFile(fname);
-  cout<<"load ROOT file: "<<fname<<endl;
+  if(f==NULL) {
+    f=new TFile(fname);
+    cout<<"load ROOT file: "<<fname<<endl;
+  }
   xe=(TH1D*)f->Get("TpjPeak");
   xe->SetTitle(xe->GetName());
   ggm=(TH2D*)f->Get("ggmat");
@@ -48,15 +41,26 @@ void gg()
   setxrange(0,2000);
   setnpeaks(40);
   setpeakwidth(-3,3);
-  newcanvas(1);
-  tpj(1);
+  tpjm();
 }
 
+void tpjm()
+{
+  newcanvas(2);
+  setxrange(0,1000);
+  tpj(1);
+  setxrange(1000,2000);
+  tpj(2);
+  setxrange();
+}
 void tpj(int icy=1)
 {
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
-  peaks(xe);
+  TString sname=Form("%s_%i",xe->GetName(),ih++);
+  TH1D *h=(TH1D*)xe->Clone(sname);
+  h->SetTitle(xe->GetTitle());
+  peaks(h);
 }
 
 //gated on x axis
@@ -68,22 +72,36 @@ void g(double ge, int icy=1)
   TH1D *ha=(TH1D*)ggm->ProjectionY(sha,ge+dge1,ge+dge2);
   TString sname=Form("%s_%i",ha->GetName(),ih++);
   TH1D *h=(TH1D*)ha->Clone(sname);
-  ha->SetTitle(sha);
-  peaks(ha);
+  h->SetTitle(sha);
+  peaks(h);
   
 }
 
-
+void gm(double ge1,double ge2=0,double ge3=0,double ge4=0, double ge5=0,double ge6=0)
+{
+  int npad=0;
+  double ge[6]={ge1,ge2,ge3,ge4,ge5,ge6};
+  for(int i=0;i<6;i++) 
+    if(ge[i]>1) npad++;
+  newcanvas(npad);
+  for(int i=0;i<npad;i++)
+    g(ge[i],i+1);
+}
 void newcanvas(int ncy1=1)
 {
   ic++;
   ncy=ncy1;
-  int npx=800;
-  int npy=800;
-  if(ncy1==1)npy=400;
-  ca[ic]=new TCanvas(Form("ca%i",ic),Form("canvas%i",ic),npx,npy);
+  double w=800;
+  double h=800;
+  if(ncy1==1)h=400;
+  ca[ic]=new TCanvas(Form("ca%i",ic),Form("canvas%i",ic),w,h);
   ca[ic]->Divide(1,ncy);
-  if(ncy>1) cout<<Form("create a CANVAS [%s] with (1,%i) ",ca[ic]->GetName(),ncy)<<endl;
+  for(int i=1;i<=ncy;i++) {
+    ca[ic]->GetPad(i)->SetBottomMargin(0.05);
+    ca[ic]->GetPad(i)->SetTopMargin(0.005);
+    ca[ic]->GetPad(i)->SetLeftMargin(0.05);
+    ca[ic]->GetPad(i)->SetRightMargin(0.05);
+  }
 
 }
 
@@ -101,9 +119,9 @@ void peaks(TH1 *h, Double_t thres=0.05,int backsub=0)
    hb=(TH1D*)s->Background(h,20,"same");
    h->Add(h,hb,1,-1);
   }
-  int ymin=h->GetMinimum();
-  int ymax=h->GetMaximum()*1.2;
-  if(ymin<0) ymin*=0.2;
+  double ymin=h->GetMinimum();
+  double ymax=h->GetMaximum()*1.2;
+  if(ymin<0) ymin=0.01;
   h->SetAxisRange(ymin,ymax,"Y");
   h->SetStats(0);
   Int_t nfound=100;
@@ -115,7 +133,7 @@ void peaks(TH1 *h, Double_t thres=0.05,int backsub=0)
     if(thres<0 || abs(nfound-npeaks)<3 ) break;
     nloop++;
     }
-  cout<<nfound<<" peaks have been found."<<endl;
+  // cout<<nfound<<" peaks have been found."<<endl;
   TPolyMarker *pm=(TPolyMarker *)
                       h->GetListOfFunctions()->FindObject("TPolyMarker");
   cout<<"pm:"<<pm<<endl;
