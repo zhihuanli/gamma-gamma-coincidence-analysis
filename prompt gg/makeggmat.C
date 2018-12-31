@@ -18,17 +18,18 @@ void makeggmat()
   cout<<"Generate gg matix to ["<<ggfile<<"] from ["<<rootfile<<"]"<<endl;
   TFile *fin=TFile::Open(rootfile);
   TTree *tree=(TTree*)fin->Get("tree");
-
-  TString scut0="abs(caxt-cayt)<200&&decaytime<200";//set condition for gg.  
-  tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");//gg coin.
-  auto hgg=(TH2D*)gROOT->FindObject("gg");
-  auto hx=(TH1D*)hgg->ProjectionX("Tpj");
+  //condition for gg matrix 
+  TString scut0="abs(caxt-cayt)<200&&decaytime<200";  
+  //make gg 2D histogram 
+  tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
+  auto hgg=(TH2D*)gROOT->FindObject("gg"); //gg matrix
+  auto hx=(TH1D*)hgg->ProjectionX("Tpj"); //total projection spectrum(Tpj)
   TSpectrum *sx= new TSpectrum(500);
   Int_t nfoundx=sx->Search(hx,2,"",0.1);
-  auto hbx=sx->Background(hx,8,"same");//
+  auto hbx=sx->Background(hx,8,"same"); //background of Tpj
   hbx->SetName("TpjBg");hbx->SetTitle("TpjBg");
   auto hpeakx=(TH2D*)hbx->Clone("TpjPeak");
-  hpeakx->Add(hx,hbx,1,-1);
+  hpeakx->Add(hx,hbx,1,-1); //net peaks of Tpj
   hpeakx->Draw("same");
 
   TH2D* hggb=new TH2D("ggbmat","bgmat for gg",4096,0,4096,4096,0,4096);
