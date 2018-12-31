@@ -38,9 +38,9 @@ void gg()
   xe->SetTitle(xe->GetName());
   ggm=(TH2D*)f->Get("ggmat");
   ggm->SetTitle(ggm->GetName());
-  setxrange(0,2000);
-  setnpeaks(40);
-  setpeakwidth(-3,3);
+  setxrange();
+  setnpeaks();
+  setpeakwidth();
   tpjm();
 }
 
