@@ -45,4 +45,10 @@ g(152,2)     //draw gate_152 to 2nd. pad of the canvas
 g(123) -- draw gate_123 to current canvas.
 // Draw gated spectra to a new canvas. -- support up to six spectra
 gm(123,234,567,897); -- draw 4 gated spectra on a canvas.
+
+// functions for setting change, all of these settings will take effect for the next drawing. 
+setxrange(0,2000);//x range of spectrum
+setnpeaks(30); // number of peaks marked in the spectrum
+setpeakwidth(-3,3); // gate width: ge-3, ge+3
+
 ```
