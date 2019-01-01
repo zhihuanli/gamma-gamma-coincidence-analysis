@@ -11,44 +11,49 @@
 #include "TTree.h"
 #include "TChain.h"
 
-TString rootfile="../../data4/d48_129_all.root";//input
-TString ggfile="d48_129gg.root";//output
+TString rootfile="../../data4/d46_125_all.root";//input
+TString ggfile="d46_125gg.root";//output
+TH2D *hggb,*hggmat;
 void makeaggmat()
 {
   cout<<"Generate gg matix to ["<<ggfile<<"] from ["<<rootfile<<"]"<<endl;
   TFile *fin=TFile::Open(rootfile);
   TTree *tree=(TTree*)fin->Get("tree");
-
-  TString scut0="dt0<100&&dt1-dt0<1000";//cut from 2D gg.
-  // TString scut1="dt0<100&&dt1-dt0>3000&&dt1-dt0<4000";//cut from 2D gg.
+  //for 123Ag,129Cd
+  // TString scut0="dt0<300&&dt1-dt0<400";//cut from 2D gg.
+  //TString scut1="dt0<300&&dt1-dt0>3000&&dt1-dt0<3400";//cut from 2D gg.
+  //for 125Ag
+  TString scut0="dt0<200&&dt1-dt0<300";//cut from 2D gg.
+  TString scut1="dt0<200&&dt1-dt0>3500&&dt1-dt0<3800";//cut from 2D gg.
   // cout<<"Making gg histogram with condition of "<<scut<<endl;
   
   tree->Draw("cde0:cde1>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
-  //tree->Draw("cde0:cde1>>gg1(4096,0,4096,4096,0,4096)",scut1,"colz");
-  //auto hgg0=(TH2D*)gROOT->FindObject("gg0");
-  //auto hgg1=(TH2D*)gROOT->FindObject("gg1");
-  //TH2D* hgg=new TH2D("gg","gg",4096,0,4096,4096,0,4096);
-  //hgg->Add(hgg0,hgg1,1,-1);
+  tree->Draw("cde0:cde1>>gg1(4096,0,4096,4096,0,4096)",scut1,"colz");
   auto hgg=(TH2D*)gROOT->FindObject("gg");
+  auto hgg1=(TH2D*)gROOT->FindObject("gg1");
+  // TH2D* hgg=new TH2D("gg","gg",4096,0,4096,4096,0,4096);
+  hgg->Add(hgg,hgg1,1,-1);
+  //auto hgg=(TH2D*)gROOT->FindObject("gg");
   auto hx=(TH1D*)hgg->ProjectionX("xTpj");
+
   TSpectrum *sx= new TSpectrum(500);
   Int_t nfoundx=sx->Search(hx,2,"",0.1);
-  auto hbx=sx->Background(hx,8,"same");//8 for pd125,
+  auto hbx=sx->Background(hx,10,"same");//8 for pd125,
   hbx->SetName("xTpjBg");hbx->SetTitle("xTpjBg");
   auto hpeakx=(TH2D*)hbx->Clone("xTpjPeak");
   hpeakx->Add(hx,hbx,1,-1);
   hpeakx->Draw("same");
-
+  
   auto hy=(TH1D*)hgg->ProjectionY("yTpj");
   TSpectrum *sy= new TSpectrum(500);
   Int_t nfoundy=sy->Search(hy,2,"",0.1);
-  auto hby=sy->Background(hy,8,"same");//8 for pd125,
+  auto hby=sy->Background(hy,15,"same");//8 for pd125,
   hby->SetName("yTpjBg");hby->SetTitle("yTpjBg");
   auto hpeaky=(TH2D*)hby->Clone("yTpjPeak");
   hpeaky->Add(hy,hby,1,-1);
   hpeaky->Draw("same");
   
-  TH2D* hggb=new TH2D("ggbmat","bgmat for gg",4096,0,4096,4096,0,4096);
+  hggb=new TH2D("ggbmat","bgmat for gg",4096,0,4096,4096,0,4096);
   hggb->Reset();
   Double_t T,Pi,Pj,pi,pj,bi,bj,Bij,x,y;
   T=hx->Integral();
@@ -66,9 +71,9 @@ void makeaggmat()
       hggb->Fill(x,y,Bij);
     }
   }
-  TH2D* hggmat=new TH2D("ggmat","gg with backsub",4096,0,4096,4096,0,4096);
-  
+  hggmat=new TH2D("ggmat","gg with backsub",4096,0,4096,4096,0,4096);  
   hggmat->Add(hgg,hggb,1,-1);
+ 
   TFile *fout=new TFile(ggfile,"RECREATE");
   hgg->Write();
   hx->Write();
@@ -81,5 +86,6 @@ void makeaggmat()
   hggmat->Write();
   fout->Write();
   fout->Close(); 
+  
 }
 
