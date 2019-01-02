@@ -1,13 +1,12 @@
-
-int xmin=0;
-int xmax=3000;//range for hist
-int npeaks=30;//number of peaks for TSpectrum
-int dge1=-3;//gate width:ge+dge1 - ge+dge2
-int dge2=3;
-TString fname="46_123gg.root";//filename;
+int xmin;
+int xmax;//range for hist
+int npeaks;//number of peaks for TSpectrum
+int dge1;//gate width:ge+dge1 - ge+dge2
+int dge2;
+TString fname="xia.root";//filename;
 
 void gg();
-void setxrange(int xmin1=0, int xmax1=4000) {xmin=xmin1;xmax=xmax1;};
+void setxrange(int xmin1=0, int xmax1=3072){  xmin=xmin1; xmax=xmax1;};
 void setnpeaks(int npeaks1=30) {npeaks=npeaks1;};
 void setpeakwidth(double dgea=-3,double dgeb=3) {dge1=dgea;dge2=dgeb;};
 void newcanvas(int ncy=1);
@@ -16,12 +15,12 @@ void tpj(int icy=1);
 void g(double ge,int icy=1);
 void gm(double ge1,double ge2=0,double ge3=0,double ge4=0,
 	double ge5=0,double ge6=0);//draw multi peaks in a canvas , up to six peaks.
-void peaks(TH1 *h, Double_t thres=0.05,int backsub=1);
+void peaks(TH1 *h, Double_t thres=0.05);
 
 
 TFile *f;
 TH1D *xe,*ye;
-TH2D *ggm;
+TH2I *ggm;
 TCanvas *ca[1000];
 int ic=-1;//canvas id
 int ncy=1;//number of windows in y axia
@@ -36,7 +35,7 @@ void gg()
   }
   xe=(TH1D*)f->Get("TpjPeak");
   xe->SetTitle(xe->GetName());
-  ggm=(TH2D*)f->Get("ggmat");
+  ggm=(TH2I*)f->Get("ggmat");
   ggm->SetTitle(ggm->GetName());
   setxrange();
   setnpeaks();
@@ -47,9 +46,9 @@ void gg()
 void tpjm()
 {
   newcanvas(2);
-  setxrange(0,1000);
+  setxrange(0,1536);
   tpj(1);
-  setxrange(1000,2000);
+  setxrange(1536,3072);
   tpj(2);
   setxrange();
 }
@@ -69,11 +68,11 @@ void g(double ge, int icy=1)
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
   TString sha=Form("gated on ge=%i",int(ge));
-  TH1D *ha=(TH1D*)ggm->ProjectionY(sha,ge+dge1,ge+dge2);
+  TH1D *ha=(TH1D*)ggm->ProjectionX(sha,ge+dge1,ge+dge2);
   TString sname=Form("%s_%i",ha->GetName(),ih++);
-  TH1D *h=(TH1D*)ha->Clone(sname);
-  h->SetTitle(sha);
-  peaks(h);
+  ha->SetName(sname);
+  ha->SetTitle(sha);
+  peaks(ha);
   
 }
 
@@ -104,29 +103,31 @@ void newcanvas(int ncy1=1)
   }
 
 }
-
 TH1D *hb;
-
-void peaks(TH1 *h, Double_t thres=0.05,int backsub=0)
+void peaks(TH1 *hh, Double_t thres=0.05)
 {
-
+  TString sname=Form("%s_%i",hh->GetName(),ih++);
+  double x0=hh->GetBinLowEdge(hh->GetNbinsX());
+  double x1=hh->GetBinLowEdge(0);
+  if(xmin<x1) xmin=x1;
+  if(xmax>x0) xmax=x0;
+  hh->SetAxisRange(xmin,xmax,"X");
+  // hh->Print("all");
+  double ymin=hh->GetMinimum();
+  double ymax=hh->GetMaximum()*1.3;
+  if(ymin<0) ymin=0.01;
+  cout<<"a "<<hh->GetMaximum()<<endl;
+  TH1D *h=(TH1D*)hh->Clone(sname); 
   h->SetAxisRange(xmin,xmax,"X");
   h->Sumw2(0);
   h->SetLineColor(kBlue);
   h->SetFillColor(kCyan);
   TSpectrum *s=new TSpectrum(500);
-  if(backsub) {
-   hb=(TH1D*)s->Background(h,20,"same");
-   h->Add(h,hb,1,-1);
-  }
-  double ymin=h->GetMinimum();
-  double ymax=h->GetMaximum()*1.2;
-  if(ymin<0) ymin=0.01;
   h->SetAxisRange(ymin,ymax,"Y");
   h->SetStats(0);
   Int_t nfound=100;
   Int_t nloop=0;
-  while(nloop<50){
+   while(nloop<50){
     nfound=s->Search(h,2,"",thres);
     if(nfound>npeaks) thres += 0.005;
     else thres -= 0.005;
