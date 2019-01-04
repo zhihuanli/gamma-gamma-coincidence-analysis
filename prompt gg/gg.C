@@ -52,7 +52,7 @@ void tpjm()
   tpj(2);
   setxrange();
 }
-void tpj(int icy=1)
+void tpj(int icy)
 {
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
@@ -63,7 +63,7 @@ void tpj(int icy=1)
 }
 
 //gated on x axis
-void g(double ge, int icy=1)
+void g(double ge, int icy)
 {
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
@@ -78,7 +78,7 @@ void g(double ge, int icy=1)
   
 }
 
-void gm(double ge1,double ge2=0,double ge3=0,double ge4=0, double ge5=0,double ge6=0)
+void gm(double ge1,double ge2,double ge3,double ge4, double ge5,double ge6)
 {
   int npad=0;
   double ge[6]={ge1,ge2,ge3,ge4,ge5,ge6};
@@ -88,7 +88,7 @@ void gm(double ge1,double ge2=0,double ge3=0,double ge4=0, double ge5=0,double g
   for(int i=0;i<npad;i++)
     g(ge[i],i+1);
 }
-void newcanvas(int ncy1=1)
+void newcanvas(int ncy1)
 {
   ic++;
   ncy=ncy1;
@@ -106,7 +106,7 @@ void newcanvas(int ncy1=1)
 
 }
 TH1D *hb;
-void peaks(TH1 *hh, Double_t thres=0.05)
+void peaks(TH1 *hh, Double_t thres)
 {
   TString sname=Form("%s_%i",hh->GetName(),ih++);
   double x0=hh->GetBinLowEdge(hh->GetNbinsX());
