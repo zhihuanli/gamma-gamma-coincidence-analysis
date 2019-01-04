@@ -68,8 +68,8 @@ void g(double ge, int icy=1)
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
   TString sha=Form("gated on ge=%i",int(ge));
-  double ge1=ggm->GetXaxis()->FindBin(ge+dge1);
-  double ge2=ggm->GetXaxis()->FindBin(ge+dge2);
+  int ge1=ggm->GetXaxis()->FindBin(ge+dge1);
+  int ge2=ggm->GetXaxis()->FindBin(ge+dge2);
   TH1D *ha=(TH1D*)ggm->ProjectionX(sha,ge1,ge2);
   TString sname=Form("%s_%i",ha->GetName(),ih++);
   ha->SetName(sname);
