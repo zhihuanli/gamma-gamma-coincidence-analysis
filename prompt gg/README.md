@@ -10,7 +10,7 @@
  for(int i=0;i<idet;i++) {
    for(int j=0;j<idet;j++) {
       if(i==j) continue;
-      if(ge[i]<10 || ge[j]<10 || gt[i]<10 || gt[j]<10) continue; //condition for gamma-gamma coincidence.
+      if(ae[i]<10 || ae[j]<10 || at[i]<10 || at[j]<10) continue; //condition for gamma-gamma coincidence.
       caxe[hit]=ae[i];//energy
       caxt[hit]=at[i];//time
       caye[hit]=ae[j];
