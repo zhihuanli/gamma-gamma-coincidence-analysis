@@ -2,23 +2,7 @@
 ## makeggmat.C
 #### makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
 #### Usage: root -l makeggmat.C
-### Input file: 
- Includes four branches of gamma-gamma events: caxe[hit],caxt[hit],caye[hit],cayt[hit].
- Those two branches are generated from original gamma events (ae[idet], at[idet], idet= number of det) by the following way:
- ```cpp
- int hit=0;
- for(int i=0;i<idet;i++) {
-   for(int j=0;j<idet;j++) {
-      if(i==j) continue;
-      if(ae[i]<10 || ae[j]<10 || at[i]<10 || at[j]<10) continue; //condition for gamma-gamma coincidence.
-      caxe[hit]=ae[i];//energy
-      caxt[hit]=at[i];//time
-      caye[hit]=ae[j];
-      cayt[hit]=aet[j];
-      hit++;
-    }
-  }
- ```   
+ 
 ### makeggmat.C:
 Following lines in the code should be modified by user
 
