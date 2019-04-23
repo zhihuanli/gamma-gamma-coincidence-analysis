@@ -1,6 +1,10 @@
 //Make prompt g-g coincidence matrix using RADWARE approach.
 //Usage: root -l makeggmat.C
 //The output file will be analyzed by gg.C
+// Author: Zhihuan Li
+// Email: zhli@pku.edu.cn
+// Last-Updated: Feb.2019
+
 #include <iostream>
 #include <sstream>
 #include "TString.h"
