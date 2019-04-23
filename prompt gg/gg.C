@@ -1,3 +1,6 @@
+//Gamma-gamma coincidence analysis version 0.8 using RADWARE approch
+//By Zhihuan Li , Peking University. 2019
+//Any suggestions and comments to zhli@pku.edu.cn
 
 int xmin;
 int xmax;//range for hist
