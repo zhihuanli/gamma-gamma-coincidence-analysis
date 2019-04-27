@@ -29,6 +29,10 @@
 - root [1] gmatrix t
 - root [2] t.Loop();
 - root [3] .q
+
+### test code: gg.C, ggg.C 
+
+
 ## old code for two-fold analysis
 --- 
 ## makeggmat.C
