@@ -1,6 +1,7 @@
 ## new code for two-fold, three-fold coincidence analysis
 # gmatrix.C
 ---
+## ROOT data format
 ### Branch in gammaX.root files
 - ahit: number of hit in a event (after addback for Clover);
 - aid[ahit]:detector id
