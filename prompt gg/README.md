@@ -30,7 +30,7 @@
 - root [2] t.Loop();
 - root [3] .q
 
-### test code: gg.C, ggg.C 
+### test code: gg2.C, ggg2.C 
 
 
 ## old code for two-fold analysis
