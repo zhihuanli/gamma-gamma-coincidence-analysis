@@ -1,4 +1,5 @@
 ## new code for two-fold, three-fold coincidence analysis
+# gmatrix.C
 ---
 ### Branch in gammaX.root files
 - ahit: number of hit in a event (after addback for Clover);
@@ -16,7 +17,11 @@
 - root [9] ch.MakeClass("gmatix"); //create gmatrix.C & gmatrix.h
 - root [10].q
 
-2.modifiy gmatrix.C according to your experimental condition:
+2.modifiy gmatrix.C according to your experimental conditions. Refer to gmatrix.C code.
+ - name of input file, outputfile
+ - number of bins, minimum & maximum gamma energy 
+ - time & energy condition for coincidence
+
 3.make matrix data gamma.root
 - root -l
 - root [0] .L gmatrix.C
