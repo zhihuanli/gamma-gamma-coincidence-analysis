@@ -13,7 +13,7 @@
 - root [1] ch.Add("gamma1.root");//Add all your gamma files to ch
 - root [2] ch.Add("gamma2.root");
 - ... ...
-- root [9] ch->MakeClass("gmatix"); //create gmatrix.C & gmatrix.h
+- root [9] ch.MakeClass("gmatix"); //create gmatrix.C & gmatrix.h
 - root [10].q
 
 2.modifiy gmatrix.C according to your experimental condition:
