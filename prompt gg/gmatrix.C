@@ -1,28 +1,8 @@
-//Branch in gammaX.root files
-//ahit: number of hit in a event (after addback for Clover);
-//aid[ahit]:detector id
-//ae[ahit]: energy
-//at[ahit]: time
-
-
-//1.Create gmatix.C
-//root -l
-//root [0] TChain ch("tree");
-//root [1] ch.Add("gamma1.root");//Add all your gamma files to ch
-//root [2] ch.Add("gamma2.root");
-//... ...
-//root [9] ch->MakeClass("gmatix"); //create gmatrix.C & gmatrix.h
-//root [10].q
-
-//2.modifiy gmatrix.C according to your experimental condition:
-//3.make matrix data gamma.root
-//root -l
-//root [0] .L gmatrix.C
-//root [1] gmatrix t
-//root [2] t.Loop();
-//root [3] .q
-
-
+//Make prompt g-g,g-g-g coincidence matrix using RADWARE approach.
+//The output file will be analyzed by g2.C && g3.C
+// Author: Zhihuan Li
+// Email: zhli@pku.edu.cn
+// Last-Updated: Apr.2019
 
 #define gmatrix_cxx
 #include "gmatrix.h"
