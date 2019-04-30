@@ -53,7 +53,10 @@ void newcanvas(int ncy=1);// create new canvas with ncy pads.
 void tpjm();//draw totoal projection spectrum 
 void tpj(int icy=1);
 TString g(double ge=0,int icy1=1);//draw a gated spectrum using defalut width setting.
-TString gw(double ge1=0,double ge2=0, int icy1=1);// draw a gated spectrum with specified range of ge1-ge2
+//gated by ge1 and ge2 for three-fold coincidence
+TString g2(double ge1=0,double ge2=0, int icy1=1);
+// draw a gated spectrum with specified range of ge1-ge2
+TString gw(double ge1=0,double ge2=0, int icy1=1);
 // And
 TString gand(double ge1=0,double ge2=0,double ge3=0,double ge4=0, double ge5=0,double ge6=0);
 // Sum
@@ -70,59 +73,48 @@ void show(){tall->ls();};
 ```
 #### usage:
  ```cpp
-1. root -l ge.C  -- total projection spectrum will show up.
+1. root -l gg.C  -- total projection spectrum will show up.
   0 1 gtpj0  [TpjPeak]
   0 1 gtpj1  [TpjPeak]
-2.[ROOT] gm(123,234,567,897); -- draw 4 gated spectra on a canvas.
+2.[ROOT] newcanvas() //create a canvas with (1x1)
+3.[ROOT] g(132)      //draw gate_132 to the canvas
+// Draw two gated spectra to a new canvas.
+4.[ROOT] newcanvas(2) //create a cavas with （1，2）pads
+5.[ROOT] g(132,1)     //draw gate_132 to 1st. pad of the canvas
+6.[ROOT] g(152,2)     //draw gate_152 to 2nd. pad of the canvas
+// Draw a gated spectrum to current canvas.
+7.[ROOT] g(123) -- draw gate_123 to current canvas.
+8.[ROOT] gw(122,125)
+9.[ROOT] gm(123,234,567,897); -- draw 4 gated spectra on a canvas.
   1 1 g123_2  [gated on ge=123.0]
   1 2 g245_3  [gated on ge=245.0]
   1 3 g567_4  [gated on ge=567.0]
-3.[ROOT] gand(123,245,567,867);
+  1 4 g567_4  [gated on ge=879.0]
+10.[ROOT] gand(123,245,567,867);
   2 1 g123_5  [gated on ge=123.0]
   2 2 g245_6  [gated on ge=245.0]
   2 3 g567_7  [gated on ge=567.0]
   2 4 gand0   [And gate of 123.0 245.0 567.0]
-4.[ROOT] gm(g123_5,g,g245_6,gand0)
+11.[ROOT] gm(g123_5,g,g245_6,gand0)
   3 3 g123_2  [gated on ge=123.0]
   3 3 g245_3  [gated on ge=245.0]
   3 3 gand0  [And gate of 123.0 245.0 567.0]
-5.[ROOT] newcanvas() //create a canvas with (1x1)
-6.[ROOT] g(132)      //draw gate_132 to the canvas
-// Draw two gated spectra to a new canvas.
-7.[ROOT] newcanvas(2) //create a cavas with （1，2）pads
-8.[ROOT] g(132,1)     //draw gate_132 to 1st. pad of the canvas
-9.[ROOT] g(152,2)     //draw gate_152 to 2nd. pad of the canvas
+12.g2(123,245,1) - draw a spectrum gated by 123 and 245 for three-fold coincidence
+  0 1 gtrip0  [two-fold gates by 123.0 keV and 245.0 keV]
+//show all existing gated spectra
+13.show()
+OBJ: TList	TList	Doubly linked list : 0
+ OBJ: TH1D	g121_2	gated on 121.0 keV : 0 at: 0x7fd6d7cb9990
+ OBJ: TH1D	g244_3	gated on 244.0 keV : 0 at: 0x7fd6db11cff0
+ OBJ: TH1D	gsub0	sub gate of 121.0 244.0 keV : 0 at: 0x7fd6da5f6250
+ OBJ: TH1D	g121_4	gated on 121.0 keV : 0 at: 0x7fd6db121f70
+ OBJ: TH1D	g121_5	gated on 121.0 keV : 0 at: 0x7fd6db246b90
+14.gm(g121_2,gsub0,g244_3) - with name of histograms
 
-// Draw a gated spectrum to current canvas.
-10.[ROOT] g(123) -- draw gate_123 to current canvas.
-11.[ROOT] gw(122,125)
 // functions for setting change, all of these settings will take effect for the next drawing. 
-11.[ROOT] setxrange(0,2000);//x range of spectrum
-12.[ROOT] setnpeaks(30); // number of peaks marked in the spectrum
-13.[ROOT] setpeakwidth(-3,3); // gate width: ge-3, ge+3
+15.[ROOT] setxrange(0,2000);//x range of spectrum
+16.[ROOT] setnpeaks(30); // number of peaks marked in the spectrum
+17.[ROOT] setpeakwidth(-3,3); // gate width: ge-3, ge+3
 
 ```
 
-
-### test code: gg2.C, ggg3.C 
-
-
-## old code for two-fold analysis
---- 
-## makeggmat.C
-#### makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
-#### Usage: root -l makeggmat.C
- 
-### makeggmat.C:
-Following lines in the code should be modified by user
-
- ```cpp
- TString rootfile="../../decay46_123_all.root"; // Name of input file
- TString ggfile="43_123gg.root"; // Name of output file
- ......
- //condition for gg matrix 
- TString scut0="abs(caxt-cayt)<200&&decaytime<200"; 
- //make gg 2D histogram 
- tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
-```
----
