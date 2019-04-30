@@ -206,13 +206,13 @@ void gmatrix::Loop()
    hg3x->Write();
    hg3xb->Write();
    hg3xp->Write();
-
+/*
    hg4xyzw->Write();
    hg4xyz->Write();
    hg4xy->Write();
    hg4x->Write();
    hg4xb->Write();
    hg4xp->Write();
-
+*/
    fout->Close();
 }
