@@ -1,5 +1,15 @@
 TH1F *hgb,*hg,*hga;
-void ggg(Double_t gy, Double_t gz)
+Double_t getv(TH2F *h,int i, int j)
+{
+  return h->GetBinContent(i,j);
+}
+
+Double_t getv(TH1F *h,int i)
+{
+  return h->GetBinContent(i);
+}
+
+void ggg3(Double_t gy, Double_t gz)
 {
   
   TFile *fg=new TFile("gamma.root");
@@ -30,15 +40,15 @@ void ggg(Double_t gy, Double_t gz)
   for(int i=1; i<=N; i++) {
     for(int j=iy1; j<=iy2; j++) {
       for(int k=iz1; k<=iz2; k++) {
-	Mij=hg3xy->GetBinContent(i,j);
-	Mik=hg3xy->GetBinContent(i,k);
-	Mjk=hg3xy->GetBinContent(j,k);
-	Pi=hg3xy->GetBinContent(i);
-	Pj=hg3xy->GetBinContent(j);
-	Pk=hg3xy->GetBinContent(k);	
-	bi=hg3xb->GetBinContent(i);
-	bj=hg3xb->GetBinContent(j);
-	bk=hg3xb->GetBinContent(k);	
+	Mij=getv(hg3xy,i,j);
+	Mik=getv(hg3xy,i,k);
+	Mjk=getv(hg3xy,j,k);
+	Pi=getv(hg3x,i);
+	Pj=getv(hg3x,j);
+	Pk=getv(hg3x,k);	
+	bi=getv(hg3xb,i);
+	bj=getv(hg3xb,j);
+	bk=getv(hg3xb,k);	
 	Bijk=(Mij*bk+Mik*bj+Mjk*bi)/T
 	  +(-Pi*bj*bk-bi*Pj*bk-bi*bj*Pk+bi*bj*bk)/T/T;
 	hgb->Fill(hgb->GetBinCenter(i),Bijk);
