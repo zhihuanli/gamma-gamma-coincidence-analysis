@@ -30,28 +30,6 @@
 - root [2] t.Loop();
 - root [3] .q
 
-### test code: gg2.C, ggg3.C 
-
-
-## old code for two-fold analysis
---- 
-## makeggmat.C
-#### makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
-#### Usage: root -l makeggmat.C
- 
-### makeggmat.C:
-Following lines in the code should be modified by user
-
- ```cpp
- TString rootfile="../../decay46_123_all.root"; // Name of input file
- TString ggfile="43_123gg.root"; // Name of output file
- ......
- //condition for gg matrix 
- TString scut0="abs(caxt-cayt)<200&&decaytime<200"; 
- //make gg 2D histogram 
- tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
-```
----
 ## gg.C - gamma-gamma analysis for prompt gg symptotic matix
 #### original parameter setting 
  ```cpp
@@ -123,3 +101,27 @@ void show(){tall->ls();};//show name of all histograms
 13.[ROOT] setpeakwidth(-3,3); // gate width: ge-3, ge+3
 
 ```
+
+
+### test code: gg2.C, ggg3.C 
+
+
+## old code for two-fold analysis
+--- 
+## makeggmat.C
+#### makeggmat.C - Make prompt g-g coincidence matrix using RADWARE approach.
+#### Usage: root -l makeggmat.C
+ 
+### makeggmat.C:
+Following lines in the code should be modified by user
+
+ ```cpp
+ TString rootfile="../../decay46_123_all.root"; // Name of input file
+ TString ggfile="43_123gg.root"; // Name of output file
+ ......
+ //condition for gg matrix 
+ TString scut0="abs(caxt-cayt)<200&&decaytime<200"; 
+ //make gg 2D histogram 
+ tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
+```
+---
