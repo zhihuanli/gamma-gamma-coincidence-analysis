@@ -42,7 +42,7 @@ int npeaks=30;
 int dge1=-3;
 int dge2=3;
 //Name of input file
-TString fname="46_123gg.root";
+TString fname="gamma.root";
 ```
 ### Functions
  ```cpp
@@ -52,20 +52,21 @@ void setpeakwidth(double dgea=-3,double dgeb=3) {dge1=dgea;dge2=dgeb;};// set ga
 void newcanvas(int ncy=1);// create new canvas with ncy pads.
 void tpjm();//draw totoal projection spectrum 
 void tpj(int icy=1);
-TString g(double ge,int icy1=1);//draw a gated spectrum using defalut width setting.
-TString gw(double ge1,double ge2, int icy1=1);// draw a gated spectrum with specified range of ge1-ge2
-TString gand(double ge1,double ge2,double ge3=0,double ge4=0,
-	  double ge5=0,double ge6=0);// and of all spectra ge1xge2xge3... 
-TString gadd(double ge1,double ge2,double ge3=0,double ge4=0,
-	  double ge5=0,double ge6=0);// sum of all spectra  ge1+ge2+ge3...
-TString gsub(double ge1,double ge2,double ge3=0,double ge4=0,
-	     double ge5=0,double ge6=0); // substruction of spectra: ge1-ge2-ge3...
-void gm(double ge1,double ge2=0,double ge3=0,double ge4=0,
-	double ge5=0,double ge6=0);//draw multi peaks in a canvas , up to six peaks.
-void gm(TH1D* h1, TH1D *h2=NULL, TH1D *h3=NULL, TH1D *h4=NULL,
-	TH1D *h5=NULL, TH1D *h6=NULL);//show multi-gated peaks using histograms as parameters
+TString g(double ge=0,int icy1=1);//draw a gated spectrum using defalut width setting.
+TString gw(double ge1=0,double ge2=0, int icy1=1);// draw a gated spectrum with specified range of ge1-ge2
+// And
+TString gand(double ge1=0,double ge2=0,double ge3=0,double ge4=0, double ge5=0,double ge6=0);
+// Sum
+TString gadd(double ge1=0,double ge2=0,double ge3=0,double ge4=0,double ge5=0,double ge6=0);
+// substruction
+TString gsub(double ge1=0,double ge2=0,double ge3=0,double ge4,double ge5=0,double ge6=0); 
+//draw multi peaks in a canvas , up to six peaks.
+void gm(double ge1,double ge2=0,double ge3=0,double ge4=0,double ge5=0,double ge6=0);
+//draw multi peaks in a canvas , up to six peaks.
+void gm(TH1D* h1, TH1D *h2=NULL, TH1D *h3=NULL, TH1D *h4=NULL,TH1D *h5=NULL, TH1D *h6=NULL);
 TString peaks(TH1 *h, Double_t thres=0.05);
-void show(){tall->ls();};//show name of all histograms
+//show name of all histograms
+void show(){tall->ls();};
 ```
 #### usage:
  ```cpp
