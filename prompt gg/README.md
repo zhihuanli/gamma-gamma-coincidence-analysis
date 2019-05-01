@@ -83,19 +83,18 @@ void show(){tall->ls();};
 5.[ROOT] g(132,1)     //draw gate_132 to 1st. pad of the canvas
 6.[ROOT] g(152,2)     //draw gate_152 to 2nd. pad of the canvas
 // Draw a gated spectrum to current canvas.
-7.[ROOT] g(123) -- draw gate_123 to current canvas.
-8.[ROOT] gw(122,125)
-9.[ROOT] gm(123,234,567,897); -- draw 4 gated spectra on a canvas.
+7.[ROOT] gw(122,125) //gate range 122-125, gw(122,125,1)
+8.[ROOT] gm(123,234,567,897); -- draw 4 gated spectra on a canvas.
   1 1 g123_2  [gated on ge=123.0]
   1 2 g245_3  [gated on ge=245.0]
   1 3 g567_4  [gated on ge=567.0]
   1 4 g567_4  [gated on ge=879.0]
-10.[ROOT] gand(123,245,567,867);
+9.[ROOT] gand(123,245,567,867);
   2 1 g123_5  [gated on ge=123.0]
   2 2 g245_6  [gated on ge=245.0]
   2 3 g567_7  [gated on ge=567.0]
   2 4 gand0   [And gate of 123.0 245.0 567.0]
-11.[ROOT] gm(g123_5,g,g245_6,gand0)
+10.[ROOT] gm(g123_5,g,g245_6,gand0)
   3 3 g123_2  [gated on ge=123.0]
   3 3 g245_3  [gated on ge=245.0]
   3 3 gand0  [And gate of 123.0 245.0 567.0]
