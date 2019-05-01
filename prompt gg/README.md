@@ -1,5 +1,5 @@
 ## new code for two-fold, three-fold coincidence analysis
-# gmatrix.C
+# gmatrix.C - generate matrix data
 ---
 ## ROOT data format
 ### Branch in gammaX.root files
