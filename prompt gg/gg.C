@@ -506,6 +506,7 @@ TString peaks(TH1 *h, Double_t thres)
    tex->SetTextColor(kRed);
    tex->Draw();
   }
+  ca[ic]->Draw();
   return h->GetName();
 }
  
