@@ -1,6 +1,6 @@
 [1.生成delayedTree](delayedTree.ipynb)
 
-[2.生成delayedMatrix](delayedMartrix.ipynb)
+[2.生成delayedMatrix](delayedMatrix.ipynb)
 
 [3.delayedgg分析](delayedgg.ipynb)
 
