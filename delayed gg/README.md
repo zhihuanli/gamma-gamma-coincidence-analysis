@@ -1,4 +1,6 @@
-
+[1.生成delayedTree](delayedTree.ipynb)
+[2.生成delayedMatrix](delayedMartrix.ipynb)
+[3.delayedgg分析](delayedgg.ipynb)
 ## makeaggmat.C
 #### makeggmat.C - Make gamma -delayed gamma coincidence matrix using RADWARE approach.
 #### Usage: root -l makedggmat.C
