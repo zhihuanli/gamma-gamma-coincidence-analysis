@@ -1,26 +1,12 @@
+## gamma -delayed gamma coincidence matrix using RADWARE approach.
+
 [1.生成delayedTree](delayedTree.ipynb)
 
 [2.生成delayedMatrix](delayedMatrix.ipynb)
 
 [3.delayedgg分析](delayedgg.ipynb)
 
-## makeaggmat.C
-#### makeggmat.C - Make gamma -delayed gamma coincidence matrix using RADWARE approach.
-#### Usage: root -l makedggmat.C
-### Input file is generated from ...
 
-### makedggmat.C:
-Following lines in the code should be modified by user
-
- ```cpp
- TString rootfile="../../decay46_123_all.root"; // Name of input file
- TString ggfile="43_123gg.root"; // Name of output file
- ......
- //condition for gg matrix 
- TString scut0="abs(caxt-cayt)<200&&decaytime<200"; 
- //make gg 2D histogram 
- tree->Draw("caxe:caye>>gg(4096,0,4096,4096,0,4096)",scut0,"colz");
- ```
 ## agg.C - gamma-gamma analysis for g-delayed g asymptotic matix
 #### original parameter setting 
  ```cpp
@@ -39,16 +25,16 @@ TString fname="46_123gg.root";
  ```cpp
 // Draw a gated spectrum to a new canvas.
 newcanvas() //create a canvas with (1,1)
-gx(132),gy(123)      //draw gate_132 to the canvas
+ga(132),gb(123)      //draw gate_132 to the canvas
 // Draw two gated spectra to a new canvas.
 newcanvas(2) //create a cavas with （1，2）pads
-gx(132,1)     //draw gate_132 to 1st. pad of the canvas
-gy(152,2)     //draw gate_152 to 2nd. pad of the canvas
+ga(132,1)     //draw gate_132 to 1st. pad of the canvas
+gb(152,2)     //draw gate_152 to 2nd. pad of the canvas
 // Draw a gated spectrum to current canvas.
-gx(123) -- draw gate_123 to current canvas.
+ga(123) -- draw gate_123 to current canvas.
 // Draw gated spectra to a new canvas. -- support up to six spectra
-gxm(123,234,567,897); -- draw 4 gated spectra on a canvas.
-gym(123,234,567,897); -- draw 4 gated spectra on a canvas.
+gam(123,234,567,897); -- draw 4 gated spectra on a canvas.
+gbm(123,234,567,897); -- draw 4 gated spectra on a canvas.
 // functions for setting change, all of these settings will take effect for the next drawing. 
 setxrange(0,2000);//x range of spectrum
 setnpeaks(30); // number of peaks marked in the spectrum
