@@ -30,7 +30,7 @@
 - root [2] t.Loop();
 - root [3] .q
 
-## gg.C - gamma-gamma analysis for prompt gg symptotic matix
+## gg.C - gamma-gamma analysis for prompt gg symptotic matrix
 #### original parameter setting 
  ```cpp
 //range of histogram, it can be modified by setxrange(xmin,xmax); 
@@ -116,4 +116,5 @@ OBJ: TList	TList	Doubly linked list : 0
 17.[ROOT] setpeakwidth(-3,3); // gate width: ge-3, ge+3
 
 ```
+## ggm.C - gamma-gamma analysis for prompt gg symptotic matrix
 
