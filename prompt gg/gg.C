@@ -1,3 +1,7 @@
+# gamma-gamma coincidence analysis 
+# Zhihuan Li, Peking University
+# Based on gf3.c of RADWARE
+# last update Feb. 2020
 struct parameters
 {
   int xmin;
@@ -225,77 +229,7 @@ TString g2(double ge1, double ge2, int icy1)
   tall->Add(ha);
   return peaks(ha);
 }
-/*
-//four-fold gated on x and y axis -- experimental
-TString g3(double ge1, double ge2, double ge3,int icy1)
-{
-  if(ge1==0 || ge2==0 || ge3==0) {
-    cout<<"wrong parameters!"<<endl;
-    return "error";
-  }
-  if(icy1>ncy) icy=ncy;
-  else icy=icy1;
-  ca[ic]->cd(icy);
-  
-  int iy1=hg4xyzw->GetAxis(1)->FindBin(ge1+st.dge1);
-  int iy2=hg4xyzw->GetAxis(1)->FindBin(ge1+st.dge2);
-  int iz1=hg4xyzw->GetAxis(2)->FindBin(ge2+st.dge1);
-  int iz2=hg4xyzw->GetAxis(2)->FindBin(ge2+st.dge2);
-  int iw1=hg4xyzw->GetAxis(3)->FindBin(ge3+st.dge1);
-  int iw2=hg4xyzw->GetAxis(3)->FindBin(ge3+st.dge2);
-  hg4xyzw->GetAxis(1)->SetRange(iy1,iy2);
-  hg4xyzw->GetAxis(2)->SetRange(iz1,iz2);
-  hg4xyzw->GetAxis(3)->SetRange(iw1,iw2);  
-  TH1F *ha=(TH1F*)hg4xyzw->Projection(0);
-  TH1F *hgb=(TH1F*)hg4x->Clone("hgb");
-  hgb->Reset();
-  Double_t T,Cijk,Cijl,Cikl,Cjlk,Mij,Mik,Mjk,Mil,Mjl,Mkl;
-  Double_t Pi,Pj,Pk,Pl,bi,bj,bk,bl,Bijkl;
-  T=hg4x->Integral();
-  int N=hg4x->GetNbinsX();
-  for(int i=1; i<=N; i++) {
-    for(int j=iy1; j<=iy2; j++) {
-      for(int k=iz1; k<=iz2; k++) {
-	for(int l=iw1; l<=iw2; l++) {
-	  Cijk=(hg4xyz,i,j,k);
-	  Cijl=(hg4xyz,i,j,l);
-	  Cikl=(hg4xyz,i,k,l);
-	  Cjlk=(hg4xyz,j,l,k);
-	  
-	  Mij=getv(hg4xy,i,j);
-	  Mik=getv(hg4xy,i,k);
-	  Mjk=getv(hg4xy,j,k);
-	  Mil=getv(hg4xy,i,l);
-	  Mjl=getv(hg4xy,j,l);
-	  Mkl=getv(hg4xy,k,l);
-	  
-	  Pi=getv(hg4x,i);
-	  Pj=getv(hg4x,j);
-	  Pk=getv(hg4x,k);
-	  Pl=getv(hg4x,l);
-	  
-	  bi=getv(hg4xb,i);
-	  bj=getv(hg4xb,j);
-	  bk=getv(hg4xb,k);
-	  bl=getv(hg4xb,l);
-	  Bijkl=(Cijk*bl+Cijl*bk+Cikl*bj+Cjlk*bi)/T
-	    +(-Mij*bk*bl-Mik*bj*bl-Mjk*bi*bl-Mil*bj*bk-Mjl*bi*bk-Mkl*bi*bj)/T/T
-	    +(Pi*bj*bk*bl+bi*Pj*bk*bl+bi*bj*Pk*bl+bi*bj*bk*Pl-bi*bj*bk*bl)/T/T/T;
-	  hgb->Fill(hgb->GetBinCenter(i),Bijkl);
-	}
-      }
-    }
-  }
- 
-  hgb->Sumw2(0);
-  ha->Add(ha,hgb,1,-1);
-  ha->SetTitle(Form("three-fold gates by %.1f_%.1f_%.1f ",ge1,ge2,ge3));
-  ha->SetName(Form("gquad%i",ihquad++));
-  tall->Add(ha);
-  return peaks(ha);
-}
 
-*/
 TString gw(double ge1,double ge2, int icy1)
 {
   if(ge1==0 || ge2==0) {
