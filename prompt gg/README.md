@@ -10,7 +10,9 @@
 - root -l gmatrix.cpp
 
 ## gg.C - gamma-gamma analysis for prompt gg symptotic matrix
-
+```cpp
+TString fname="gg46_123_200ms.root";//filename for matrix file
+```cpp
 ### Functions
  ```cpp
 void setxrange(int xmin1=0, int xmax1=1500){ xmin=xmin1; xmax=xmax1;}; //set range of x-axis
@@ -84,4 +86,5 @@ OBJ: TList	TList	Doubly linked list : 0
 
 ```
 ## ggm.C - gamma-gamma analysis for prompt gg symptotic matrix
+
 
