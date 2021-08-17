@@ -2,7 +2,24 @@
 # gmatrix.C - generate matrix data
 ---
 ## ROOT data format
-### Branch in gammaX.root files
+### input file：
+```cpp
+  TFile *fin=new TFile("/data/d2/zhli/hepfarm/ur12ana/test/srootall/decay46_123_all.root");
+  TTree *tree=(TTree*)fin->Get("tree");
+  Int_t           ahit;
+  Double_t        ae[100];  
+  Double_t        at[100];  
+  Int_t           aid[100];   
+  Double_t        decaytime;
+
+  tree->SetBranchAddress("ahit",&ahit);
+  tree->SetBranchAddress("ae",&ae);
+  tree->SetBranchAddress("at",&at);
+  tree->SetBranchAddress("aid",&aid);
+  tree->SetBranchAddress("decaytime",&decaytime);
+  //output file
+  TFile *fout=new TFile("gg46_123_200ms.root","RECREATE");//decaytime<200ms;
+  ```
 - ahit: number of hit in a event (after addback for Clover);
 - aid[ahit]:detector id
 - ae[ahit]: energy
