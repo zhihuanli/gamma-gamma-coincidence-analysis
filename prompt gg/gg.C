@@ -30,9 +30,6 @@ void gae(int icy=1);
 
 //two-fold gated
 TString g(double ge=0,int icy1=1);
-//three-fold gated
-TString g2(double ge1=0,double ge2=0, int icy1=1);
-
 //two-fold gated with a specified gamma peak range
 TString gw(double ge1=0,double ge2=0, int icy1=1);
 //and
@@ -50,9 +47,6 @@ TString peaks(TH1 *h, Double_t thres=0.05);
 //show all existing gated histograms
 void show(){tall->ls();};//show name of all histograms
 
-Double_t getv(THnSparseF* h, int i, int j, int k );
-Double_t getv(TH2F* h, int i, int j);
-Double_t getv(TH1F* h, int i);
   
 TFile *f;
 
@@ -62,17 +56,6 @@ TH1F *hg1x;
 //two-fold
 TH1F *hg2xp;
 TH2F *hg2xyp;
-
-//three-fold
-THnSparseF *hg3xyz;
-TH2F *hg3xy;
-TH1F *hg3x, *hg3xb;
-
-//four-fold
-//THnSparseF *hg4xyzw;
-//THnSparseF *hg4xyz;
-//TH2F *hg4xy;
-//TH1F *hg4x, *hg4xb;
 
 TCanvas *ca[1000];
 int ic=-1;//canvas id
@@ -100,18 +83,6 @@ void gg()
   hg2xp=(TH1F*)f->Get("hg2xp");
   hg2xyp=(TH2F*)f->Get("hg2xyp");
   
-  //three-fold
-  hg3xyz=(THnSparseF*)f->Get("hg3xyz");
-  hg3xy=(TH2F*)f->Get("hg3xy");
-  hg3x=(TH1F*)f->Get("hg3x");
-  hg3xb=(TH1F*)f->Get("hg3xb");
-  
-  //four-fold
-  // hg4xyzw=(THnSparseF*)f->Get("hg4xyzw");
-  //hg4xyz=(THnSparseF*)f->Get("hg4xyz");
-  //hg4xy=(TH2F*)f->Get("hg4xy");//Mij
-  //hg4x=(TH1F*)f->Get("hg4x");//Pi
-  //hg4xb=(TH1F*)f->Get("hg4xb");//bi
 
   setxrange(0,2000);
   setnpeaks(30);
@@ -177,56 +148,6 @@ TString g(double ge, int icy1)
   tall->Add(ha);
   return peaks(ha);
   
-}
-
-//three-fold gated on x and y axis
-TString g2(double ge1, double ge2, int icy1)
-{
-  if(ge1==0 || ge2==0) {
-    cout<<"wrong parameters!"<<endl;
-    return "error";
-  }
-  if(icy1>ncy) icy=ncy;
-  else icy=icy1;
-  ca[ic]->cd(icy);
-  
-  int iy1=hg3xyz->GetAxis(1)->FindBin(ge1+st.dge1);
-  int iy2=hg3xyz->GetAxis(1)->FindBin(ge1+st.dge2);
-  int iz1=hg3xyz->GetAxis(2)->FindBin(ge2+st.dge1);
-  int iz2=hg3xyz->GetAxis(2)->FindBin(ge2+st.dge2); 
-  hg3xyz->GetAxis(1)->SetRange(iy1,iy2);
-  hg3xyz->GetAxis(2)->SetRange(iz1,iz2);
-  TH1F *ha=(TH1F*)hg3xyz->Projection(0);
-
-  TH1F *hgb=(TH1F*)hg3x->Clone("hgb");
-  hgb->Reset();
-  Double_t T,Mij,Mjk,Mik,Pi,Pj,Pk,bi,bj,bk,Bijk;
-  T=hg3x->Integral();
-  int N=hg3x->GetNbinsX();
-  for(int i=1; i<=N; i++) {
-    for(int j=iy1; j<=iy2; j++) {
-      for(int k=iz1; k<=iz2; k++) {
-	Mij=getv(hg3xy,i,j);
-	Mik=getv(hg3xy,i,k);
-	Mjk=getv(hg3xy,j,k);
-	Pi=getv(hg3x,i);
-	Pj=getv(hg3x,j);
-	Pk=getv(hg3x,k);	
-	bi=getv(hg3xb,i);
-	bj=getv(hg3xb,j);
-	bk=getv(hg3xb,k);	
-	Bijk=(Mij*bk+Mik*bj+Mjk*bi)/T
-	  +(-Pi*bj*bk-bi*Pj*bk-bi*bj*Pk+bi*bj*bk)/T/T;
-	hgb->Fill(hgb->GetBinCenter(i),Bijk);
-      }
-    }
-  }
-  hgb->Sumw2(0);
-  ha->Add(ha,hgb,1,-1);
-  ha->SetTitle(Form("two-fold gates by %.1f_%.1f keV",ge1,ge2));
-  ha->SetName(Form("gtrip%i",ihtrip++));
-  tall->Add(ha);
-  return peaks(ha);
 }
 
 TString gw(double ge1,double ge2, int icy1)
@@ -441,20 +362,4 @@ TString peaks(TH1 *h, Double_t thres)
   }
   ca[ic]->Draw();
   return h->GetName();
-}
- 
-Double_t getv(THnSparseF* h, int i, int j, int k )
-{
-  int x[3]={i,j,k};
-  return h->GetBinContent(x);
-}
-
-Double_t getv(TH2F *h,int i, int j)
-{
-  return h->GetBinContent(i,j);
-}
-
-Double_t getv(TH1F *h,int i)
-{
-  return h->GetBinContent(i);
 }
