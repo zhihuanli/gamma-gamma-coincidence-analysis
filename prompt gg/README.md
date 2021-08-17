@@ -1,5 +1,6 @@
-## new code for two-fold, three-fold coincidence analysis
-# gmatrix.C - generate matrix data
+## ROOT scripts for two-fold coincidence analysis (RADWARE approch)
+
+# gmatrix.cpp - generate matrix data
 ---
 ## ROOT data format
 ### input & output：
