@@ -2,50 +2,52 @@
 # gmatrix.C - generate matrix data
 ---
 ## ROOT data format
-### input file：
+### input & output：
 ```cpp
   TFile *fin=new TFile("/data/d2/zhli/hepfarm/ur12ana/test/srootall/decay46_123_all.root");
   TTree *tree=(TTree*)fin->Get("tree");
   Int_t           ahit;
-  Double_t        ae[100];  
-  Double_t        at[100];  
-  Int_t           aid[100];   
-  Double_t        decaytime;
+  Double_t        ae[100];  //ge energy
+  Double_t        at[100];  //ge time
+  Int_t           aid[100]; //ge id
+  Double_t        decaytime; // decaytime for beta-delayed gamma
 
   tree->SetBranchAddress("ahit",&ahit);
   tree->SetBranchAddress("ae",&ae);
   tree->SetBranchAddress("at",&at);
   tree->SetBranchAddress("aid",&aid);
   tree->SetBranchAddress("decaytime",&decaytime);
+  
   //output file
   TFile *fout=new TFile("gg46_123_200ms.root","RECREATE");//decaytime<200ms;
+   //matrix setting
+  Double_t gmin=0;
+  Double_t gmax=3000;
+  int ngbin=3000;
+  
+  //for all
+  TH1F *hg1x=new TH1F("hg1x","inclusive gamma spectrum",ngbin,gmin,gmax);
+  TH1F *hg1xp=new TH1F("hg1xp","net peaks of inclusive gamma spectrum",ngbin,gmin,gmax);
+  TH1F *hg1xb;
+  
+  //for two-fold
+  TH2F *hg2xy=new TH2F("hg2xy","g-g matrix",ngbin,gmin,gmax,ngbin,gmin,gmax);//for two-fold
+  TH1F *hg2x=new TH1F("hg2x","total projection spectrum for hg2xy",ngbin,gmin,gmax);
+  TH1F *hg2xp=new TH1F("hg2xp","net peaks of total projection spectrum of hg2xy",ngbin,gmin,gmax);
+  TH1F *hg2xb;
+  TH2F *hg2xyb=new TH2F("hg2xyb","background gg-matrix",ngbin,gmin,gmax,ngbin,gmin,gmax); 
+  TH2F *hg2xyp=new TH2F("hg2xyp","background subtracted gg-matrix",ngbin,gmin,gmax,ngbin,gmin,gmax); 
   ```
-- ahit: number of hit in a event (after addback for Clover);
-- aid[ahit]:detector id
-- ae[ahit]: energy
-- at[ahit]: time
+
 
 ### Procedures to create two-fold, tree-fold matrix data
-1.Create gmatix.C
-- root -l
-- root [0] TChain ch("tree");
-- root [1] ch.Add("gamma1.root");//Add all your gamma files to ch
-- root [2] ch.Add("gamma2.root");
-- ... ...
-- root [9] ch.MakeClass("gmatix"); //create gmatrix.C & gmatrix.h
-- root [10].q
-
-2.modifiy gmatrix.C according to your experimental conditions. Refer to gmatrix.C code.
+1.modifiy gmatrix.cpp according to your experimental conditions. 
  - name of input file, outputfile
  - number of bins, minimum & maximum gamma energy 
  - time & energy condition for coincidence
 
-3.make matrix data gamma.root
-- root -l
-- root [0] .L gmatrix.C
-- root [1] gmatrix t
-- root [2] t.Loop();
-- root [3] .q
+3.make matrix data 
+- root -l gmatrix.cpp
 
 ## gg.C - gamma-gamma analysis for prompt gg symptotic matrix
 #### original parameter setting 
