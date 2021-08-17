@@ -10,19 +10,7 @@
 - root -l gmatrix.cpp
 
 ## gg.C - gamma-gamma analysis for prompt gg symptotic matrix
-#### original parameter setting 
- ```cpp
-//range of histogram, it can be modified by setxrange(xmin,xmax); 
-int xmin=0;
-int xmax=3000;
-//number of marked peaks in the spectrum, it can be modified by setnpeaks(npeaks); 
-int npeaks=30;
-//range of gate, gate width:ge+dge1 - ge+dge2, it can be modified by setgatewidth(dge1,dge2)
-int dge1=-3;
-int dge2=3;
-//Name of input file
-TString fname="gamma.root";
-```
+
 ### Functions
  ```cpp
 void setxrange(int xmin1=0, int xmax1=1500){ xmin=xmin1; xmax=xmax1;}; //set range of x-axis
