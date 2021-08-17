@@ -70,7 +70,8 @@ void gmatrix()
    hg2xb->SetName("hg2xb");
    hg2xb->SetTitle("background of total projection spectrum of hg2xy");
    hg2xp->Add(hg2x,hg2xb,1,-1);
-   //for two-fold
+	
+   //make background matrix - RADWARE approch
    Double_t T,Pi,Pj,pi,pj,Bij;
    T=hg2x->Integral();
    int N=hg2x->GetNbinsX();
