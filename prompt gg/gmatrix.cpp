@@ -44,23 +44,24 @@ void gmatrix()
 	  hg1x->Fill(ae[i]);	
       }
       
-      //for two-fold
+      //two-fold gamma-gamma matrix
       if(ahit>1) {
 	for(int i=0; i<ahit; i++) {
 	  for(int j=0; j<ahit; j++) {
-	    bool bij=abs(at[i]-at[j])>200; //prompt coincidence time window
-	    if(bij)  continue;
 	    if(i==j)  continue;
-	    if(decaytime>200) continue;//decaytime
-	    hg2x->Fill(ae[i]);
-	    hg2xy->Fill(ae[i],ae[j]);
+	    bool btcut=abs(at[i]-at[j])<200; //prompt coincidence time window
+	    bool bdtcut=decaytime<200;//decaytime cut	    
+	    if(btcut && bdtcut) {
+	    	hg2x->Fill(ae[i]);
+	    	hg2xy->Fill(ae[i],ae[j]);
+	    }
 	  }
 	}
       }
       if(jentry%500000==0) cout<<jentry<<endl;;
    }
-   //"nosmoothing" option to avoid overestimate the background
-   hg1xb=(TH1F*)sa->Background(hg1x,8,"nosmoothing");
+   //"nosmoothing" option to avoid overestimation of the background
+   hg1xb=(TH1F*)sa->Background(hg1x,8,"nosmoothing")
    hg1xb->SetName("hg1xb");
    hg1xb->SetTitle("background of inclusive spectrum of hg1x");
    hg1xp->Add(hg1x,hg1xb,1,-1);   
@@ -87,9 +88,7 @@ void gmatrix()
    }
    hg2xyp->Add(hg2xy,hg2xyb,1,-1);
 
-
    fout->cd();
-
    hg1x->Write();
    hg1xb->Write();
    
@@ -99,7 +98,5 @@ void gmatrix()
    hg2x->Write();
    hg2xb->Write();
    hg2xp->Write();
-
-
    fout->Close();
 }
