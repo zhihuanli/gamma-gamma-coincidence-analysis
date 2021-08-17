@@ -5,6 +5,7 @@
  - name of input file, outputfile
  - number of bins, minimum & maximum gamma energy 
  - time & energy condition for coincidence
+ 
 2.how to run 
 - root -l gmatrix.cpp
 
