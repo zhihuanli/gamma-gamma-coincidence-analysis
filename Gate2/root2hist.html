@@ -13113,6 +13113,13 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1.-Generate-$\gamma-\gamma$-matrix(TH2)-from-a-ROOT-file(TTree)">1. Generate $\gamma-\gamma$ matrix(TH2) from a ROOT file(TTree)<a class="anchor-link" href="#1.-Generate-$\gamma-\gamma$-matrix(TH2)-from-a-ROOT-file(TTree)">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
@@ -13125,7 +13132,7 @@ div#notebook {
        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">fname</span><span class="p">.</span><span class="n">Data</span><span class="o">&lt;&lt;</span><span class="s">&quot; does not exist&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span> 
-    <span class="n">TFile</span> <span class="o">*</span><span class="n">f</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="n">fname</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span><span class="c1">//user</span>
+    <span class="n">TFile</span> <span class="o">*</span><span class="n">f</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="n">fname</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span>
     <span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span><span class="o">=</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;t&quot;</span><span class="p">);</span><span class="c1">//user</span>
     <span class="kt">int</span> <span class="n">ghit</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">ge</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
@@ -13142,7 +13149,7 @@ div#notebook {
         <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">ghit</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">ghit</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">==</span><span class="n">j</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">gt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">gt</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">&gt;</span><span class="mi">18</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">gt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">gt</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">&gt;</span><span class="mi">18</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">// coincidence time window</span>
                 <span class="n">hgg</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ge</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ge</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
                 <span class="n">hgg</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ge</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">ge</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
             <span class="p">}</span>
@@ -13174,6 +13181,17 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>在终端中利用 hadd命令将所有生成的root文件合并成一个root文件 hgg.root</p>
+<ul>
+<li>hadd hgg.root hg05.root hg06.root ....</li>
+</ul>
+
+</div>
+</div>
 </div>
     </div>
   </div>
