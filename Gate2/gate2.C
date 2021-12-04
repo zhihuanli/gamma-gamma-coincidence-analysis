@@ -21,9 +21,9 @@ using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #define codename         "Gamma-Gamma two-fold matrix data analysis Code GATE2"
-#define author           "by Li Zhihuan,  Peking University"
-#define lastmodified     "last modified on Dec. 30, 2021"
-#define webpage          "https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/prompt%20gg"
+#define author           "By Zhihuan Li,  Peking University"
+#define lastmodified     "Last modified on Dec. 4, 2021"
+#define webpage          "Find the last updates from https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/Gate2"
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -70,26 +70,33 @@ int ih=0;
 void setncanvas(int ncanvas=5) { st.ncanvas=ncanvas; }
 void setxrange(int xmin1=xmin, int xmax1=xmax){ st.xmin=xmin1; st.xmax=xmax1;};
 void setnpeaks(int npeaks1=30) {st.npeaks=npeaks1;};
-void setpeakwidth(float dgea=-2,float dgeb=2) {st.dge1=dgea; st.dge2=dgeb;};
+void setgatewidth(float dgea=-2,float dgeb=2) {st.dge1=dgea; st.dge2=dgeb;};
 void setpeakbackground(bool pb=false) {st.peak_background=pb;};
 void showSettings();
 // Show different parts of a gated-spectrum in the same window
 void gs(float ge1,int npad=4);
+void gsxr(int xmin,int xmax, float ge1,int npad=4);
 //gated-spectra up to six peaks - draw existing histograms
-void gm(float ge1=0,float ge2=0,float ge3=0,float ge4=0,float ge5=0,float ge6=0);
-void gm(TH1* h1, TH1 *h2=NULL, TH1 *h3=NULL, TH1 *h4=NULL,TH1 *h5=NULL, TH1 *h6=NULL);
-
+void gm(float ge1,float ge2=-1,float ge3=-1,float ge4=-1);
+void gm(TH1* h1, TH1 *h2=NULL, TH1 *h3=NULL, TH1 *h4=NULL);
+void gmxr(int xmin,int xmax,float ge1,float ge2=-1,float ge3=-1,float ge4=-1);
+void gmxr(int xmin,int xmax,TH1* h1, TH1 *h2=NULL, TH1 *h3=NULL, TH1 *h4=NULL);
 //total projection sepctra
-void tpjm(int npad=4);
-
+void tpjm(int npad=3);
+void tpjmxr(int xmin,int xmax,int npad=3);
 //two-fold gated with a specified gamma peak range
-TString gw(float ge1=-1,float ge2=-1);
+void gw(float ge1,float ge2);
+void gwxr(int xmin,int xmax,float ge1,float ge2);
 //and
-TString gand(float ge1=0,float ge2=0,float ge3=0,float ge4=0,float ge5=0,float ge6=0);
+void gand(float ge1,float ge2,float ge3=-1,float ge4=-1);
+void gandxr(int xmin,int xmax,float ge1, float ge2, float ge3=-1, float ge4=-1);
 //add 
-TString gadd(float ge1=0,float ge2=0,float ge3=0,float ge4=0,float ge5=0,float ge6=0);
+void gadd(float ge1,float ge2,float ge3=0,float ge4=0,float ge5=0,float ge6=0);
+void gaddxr(int xmin,int xmax,float ge1,float ge2,float ge3=-1,float ge4=-1,float ge5=-1,float ge6=-1);
 //sub
-TString gsub(float ge1=0,float ge2=0,float ge3=0,float ge4=0,float ge5=0,float ge6=0);
+void gsub(float ge1,float ge2,float ge3=-1,float ge4=-1);
+void gsubxr(int xmin,int xmax,float ge1,float ge2,float ge3=-1,float ge4=-1);
+
 //help
 void help();
 
@@ -116,11 +123,11 @@ void newcanvas(int ncy,TString sctitle);
 TString GetHistName(TString sprefix);
 void tpj(int icy=1);
 //mark peak positions
-TString peaks(TH1 *h, Double_t thres=0.05);
+void peaks(TH1 *h, Double_t thres=0.05);
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-void gate2(TString fname="hggmatrix.root",TString sg2="hg2xyp")
+void gate2(TString fname="hgglmatrix.root",TString sg2="hg2xyp")
 {
   TColor::SetColorThreshold(0.1);
   cout<<endl;
@@ -157,7 +164,8 @@ void gate2(TString fname="hggmatrix.root",TString sg2="hg2xyp")
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
   setncanvas(5);
   setnpeaks(30);
-  setpeakwidth(-3,3);
+  setxrange(xmin,xmax);
+  setgatewidth(-2,2);
   setpeakbackground(0);//
 
   showSettings();
@@ -177,38 +185,61 @@ void tpjm(int npad)
   newcanvas(npad,"Total Projection Spectrum");
   int xmina=st.xmin;
   int xmaxa=st.xmax;
-  int dx=(xmax-xmin)/npad;
+  int dx=(xmaxa-xmina)/npad;
   for(int i=0;i<npad;i++) {
-    setxrange(xmin+i*dx,xmin+(i+1)*dx);
+    setxrange(xmina+i*dx,xmina+(i+1)*dx);
     tpj(i+1);
   }
   setxrange(xmina,xmaxa);
   
 }
-
+void tpjmxr(int xmin,int xmax,int npad)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  tpjm(npad);
+  st.xmin=x1;
+  st.xmax=x2;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void gsxr(int xmin,int xmax, float ge1,int npad)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gs(ge1,npad);
+  st.xmin=x1;
+  st.xmax=x2;
+}
 void gs(float ge1,int npad)
 {
   if(npad>6) npad=6;
-  double ge[6]={ge1};
-  TString sctitle=Form("gs(%.1f)",ge[0]);
+  TString sctitle=Form("gs(%.1f)",ge1);
   newcanvas(npad,sctitle);
   int xmina=st.xmin;
   int xmaxa=st.xmax;
-  int dx=(xmax-xmin)/npad;
+  int dx=(xmaxa-xmina)/npad;
+  cout<<dx<<endl;
   for(int i=0;i<npad;i++) {
-    setxrange(xmin+i*dx,xmin+(i+1)*dx);
-    g(ge[i],i+1);
+    int x1=xmina+i*dx;
+    int x2=xmina+(i+1)*dx;
+    setxrange(x1,x2);
+    g(ge1,i+1);
   }
   setxrange(xmina,xmaxa);
 }
-
-TString gw(float ge1,float ge2)
+void gwxr(int xmin,int xmax,float ge1,float ge2)
 {
-  if(ge1==-1 || ge2==-1) {
-    cout<<"At least two gates should be specified !"<<endl;
-    return "error";
-  }
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gw(ge1,ge2);
+  st.xmin=x1;
+  st.xmax=x2;
+}
+void gw(float ge1,float ge2)
+{
   if(ge1<xmin) ge1=xmin;
   if(ge2>xmax) ge2=xmax;
   TString sctitle=Form("gw(%.1f,%.1f)",ge1,ge2);  
@@ -221,16 +252,28 @@ TString gw(float ge1,float ge2)
   TH1F *ha=(TH1F*)hg2xy->ProjectionX(sname.Data(),gea,geb);
   ha->SetTitle(stitle);
   if(!tlhist->FindObject(ha)) tlhist->Add(ha);
-  return peaks(ha);
+  peaks(ha);
 }
-void gm(float ge1,float ge2,float ge3,float ge4, float ge5, float ge6)
+
+void gmxr(int xmin,int xmax,float ge1,float ge2,float ge3,float ge4)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gm(ge1,ge2,ge3,ge4);
+  st.xmin=x1;
+  st.xmax=x2;
+
+}
+
+void gm(float ge1,float ge2,float ge3,float ge4)
 {
   int npad=0;
-  double ge[6]={ge1,ge2,ge3,ge4,ge5,ge6};
+  double ge[4]={ge1,ge2,ge3,ge4};
   for(int i=0;i<6;i++) 
     if(ge[i]>1) npad++;
   TString sctitle=Form("gm(%.1f",ge[0]);
-  for(int i=1;i<6;i++) 
+  for(int i=1;i<4;i++) 
     if(ge[i]>0) sctitle+=Form(",%.1f",ge[i]);
   sctitle+=")";
   newcanvas(npad,sctitle);
@@ -238,38 +281,56 @@ void gm(float ge1,float ge2,float ge3,float ge4, float ge5, float ge6)
     g(ge[i],i+1);
 }
 
-void gm(TH1* h1, TH1 *h2, TH1 *h3, TH1 *h4, TH1 *h5, TH1 *h6)
+void gmxr(int xmin,int xmax,TH1* h1, TH1 *h2, TH1 *h3, TH1 *h4)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gm(h1,h2,h3,h4);
+  st.xmin=x1;
+  st.xmax=x2;
+
+}
+
+void gm(TH1* h1, TH1 *h2, TH1 *h3, TH1 *h4)
 {
   int npad=0;
-  TH1 *hg[6]={h1,h2,h3,h4,h5,h6};
-  for(int i=0;i<6;i++) 
+  TH1 *hg[4]={h1,h2,h3,h4};
+  map<int,int> mg[4];
+  for(int i=0;i<4;i++) 
     if(hg[i]!=NULL) npad++;
   TString sctitle=Form("gm(%s",hg[0]->GetName());
-  for(int i=1;i<6;i++) 
+  for(int i=1;i<4;i++) 
     if(hg[i]!=NULL) sctitle+=Form(",%s",hg[i]->GetName());
   sctitle+=")";
   newcanvas(npad,sctitle);
+
   for(int i=0;i<npad;i++) {
     ca[ic]->cd(i+1);
     peaks(hg[i]);
   }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-TString gand(float ge1, float ge2, float ge3, float ge4,float ge5,float ge6)
+void gandxr(int xmin,int xmax,float ge1, float ge2, float ge3, float ge4)
 {
-  if(ge1==0 || ge2==0) {
-    cout<<"At least two gates should be specified !"<<endl;
-    return "error";
-  }
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gand(ge1, ge2, ge3, ge4);
+  st.xmin=x1;
+  st.xmax=x2;
+
+}
+void gand(float ge1, float ge2, float ge3, float ge4)
+{
   int npad=0;
-  TH1F *ha[6];
-  double ge[6]={ge1,ge2,ge3,ge4,ge5,ge6};
-  for(int i=0;i<6;i++) 
+  TH1F *ha[4];
+  double ge[4]={ge1,ge2,ge3,ge4};
+  for(int i=0;i<4;i++) 
     if(ge[i]>1) npad++;
   
   TString sctitle=Form("gand(%.1f",ge[0]);
-  for(int i=1;i<6;i++) 
+  for(int i=1;i<4;i++) 
     if(ge[i]>0) sctitle+=Form(",%.1f",ge[i]);
   sctitle+=")";
   
@@ -298,12 +359,22 @@ TString gand(float ge1, float ge2, float ge3, float ge4,float ge5,float ge6)
  
   ca[ic]->cd(npad+1);
   icy=npad+1;
-  return peaks(hand);
+  peaks(hand);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-TString gadd(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
+void gaddxr(int xmin,int xmax,float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gadd(ge1, ge2, ge3, ge4,ge5,ge6);
+  st.xmin=x1;
+  st.xmax=x2;
+
+}
+void gadd(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
 {
   if(ge1==0 || ge2==0) {
     cout<<"At least two gates should be specified !"<<endl;
@@ -337,12 +408,20 @@ TString gadd(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
    if(!tlhist->FindObject(hadd))tlhist->Add(hadd);
   ca[ic]->cd(npad+1);
   icy=npad+1;
-  return peaks(hadd);
+  peaks(hadd);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-TString gsub(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
+void gsubxr(float ge1, float ge2, float ge3, float ge4)
+{
+  int x1=st.xmin;
+  int x2=st.xmax;
+  setxrange(xmin,xmax);
+  gsub(ge1, ge2, ge3, ge4);
+  st.xmin=x1;
+  st.xmax=x2;  
+}
+void gsub(float ge1, float ge2, float ge3, float ge4)
 {
 
   if(ge1==0 || ge2==0) {
@@ -350,13 +429,13 @@ TString gsub(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
     return "error";
   }
   int npad=0;
-  TH1F *ha[6];
-  double ge[6]={ge1,ge2,ge3,ge4,ge5,ge6};
-  for(int i=0;i<6;i++) 
+  TH1F *ha[4];
+  double ge[4]={ge1,ge2,ge3,ge4};
+  for(int i=0;i<4;i++) 
     if(ge[i]>1) npad++;
   
   TString sctitle=Form("gsub(%.1f",ge[0]);
-  for(int i=1;i<6;i++) 
+  for(int i=1;i<4;i++) 
     if(ge[i]>0) sctitle+=Form(",%.1f",ge[i]);
   sctitle+=")";
   
@@ -378,7 +457,7 @@ TString gsub(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
   if(!tlhist->FindObject(hsub)) tlhist->Add(hsub);
   ca[ic]->cd(npad+1);
   icy=npad+1;
-  return peaks(hsub);
+  peaks(hsub);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -429,6 +508,7 @@ void saveCanvAll(TString sfile)
   cout<<"Write all existing histograms to "<<sfile.Data()<<endl;  
 }
 
+
 void showSettings()
 {
   cout<<RED<<"Current parameter settings:"<<endl;
@@ -451,23 +531,34 @@ void help()
   cout<< RED<<"Setup, "<<RED<<"changes will take effect for the next drawing."<<endl;
   cout<< CYAN<< "   setxrange(int xmin1, int xmax1)        - Change range of x-axis."<<endl;
   cout<< "   setnpeaks(int npeaks1=30)              - Change the number of peaks marked."<<endl;
-  cout<< "   setpeakwidth( int dgea=-2, int dgeb=2) - Change range of gate to peak-dgea to peak+dgea."<<endl;
+  cout<< "   setncanvas(int ncanvas=5)              - Change the maximum number of canvas avaliable."<<endl;
+  cout<< "   setgatewidth( int dgea=-2, int dgeb=2) - Change range of gate to peak-dgea to peak+dgea."<<endl;
   cout<< "   showSettings()                         - Show current parameter settings."<<endl;
   
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
-  cout<<RED<<"Show different parts of a gated-spectrum in the same window."<<endl;
+  cout<<RED<<"Show a gated-spectrum."<<endl;
   cout<<CYAN<<"   gs(float ge1,int npad=4)"<<endl;
-  cout<<RED<<"Gated-spectra up to six peaks/histograms"<<endl;
-  cout<<CYAN<<  "   gm(double ge1, [double ge2], ...)"<<endl;
-  cout<<  "   gm(TH1* h1, [TH1* h2], ...)"<<endl;
-  cout<<RED<< "Total projection sepctrum"<<endl;
-  cout<<CYAN<< "   tpjm(int left=0, int middle=xmax/2., int right=xmax)"<<endl;
-  cout<<RED<< "Gamma spectrum gated from ge1 to ge2"<<endl;
+  cout<<RED<<"Show gated-spectra"<<endl;
+  cout<<CYAN<<  "   gm(float ge1, [float ge2], [float ge3], [float ge4])"<<endl;
+  cout<<CYAN<< "   gm(TH1* h1, [TH1* h2],[TH1* h3],[TH1* h4])"<<endl;
+  cout<<RED<< "Show total projection sepctrum."<<endl;
+  cout<<CYAN<< "   tpjm(int npad)"<<endl;
+  cout<<RED<< "Show a spectrum gated from ge1 to ge2"<<endl;
   cout<<CYAN<< "   gw(float ge1,float ge2)"<<endl;
-  cout<<RED<< "AND, ADD, SUB gated spectra up to six spectra"<<endl;
-  cout<<CYAN<<"   gand(float ge1,float ge2, [float ge3], ...)"<<endl;
-  cout<<"   gadd(float ge1,float ge2, [float ge3], ...)"<<endl;
-  cout<<"   gsub(float ge1,float ge2, [float ge3], ...)"<<endl;
+  cout<<RED<< "Show AND, ADD, SUB gated spectra"<<endl;
+  cout<<CYAN<<"   gand(float ge1,float ge2, [float ge3], [float ge4])"<<endl;
+  cout<<"   gadd(float ge1,float ge2, [float ge3], [float ge4], [float ge5], [float ge6])"<<endl;
+  cout<<"   gsub(float ge1,float ge2, [float ge3],[float ge4])"<<endl;
+
+  cout<<RED<<"Show gated spectra with specified the x-axis range."<<endl;
+  cout<<CYAN<<"   gsxr(int xmin,int xmax,float ge1,int npad=4)"<<endl;
+  cout<<CYAN<<  "   gmxr(int xmin,int xmax,double ge1, [double ge2], ...)"<<endl;
+  cout<<CYAN<<  "   gmxr(int xmin,int xmax,TH1* h1, [TH1* h2], ...)"<<endl;
+  cout<<CYAN<< "   tpjmxr(int xmin,int xmax,int npad)"<<endl;
+  cout<<CYAN<< "   gwxr(int xmin,int xmax,float ge1,float ge2)"<<endl;
+  cout<<CYAN<<"   gandxr(int xmin,int xmax,float ge1,float ge2, [float ge3], [float ge4])"<<endl;
+  cout<<"   gaddxr(int xmin,int xmax,float ge1,float ge2, [float ge3], [float ge4], [float ge5], [float ge6])"<<endl;
+  cout<<"   gsubxr(int xmin,int xmax,float ge1,float ge2, [float ge3],[float ge4])"<<endl; 
 
 
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
@@ -485,8 +576,11 @@ void help()
   cout<<RED<<"Show all existing gated histograms"<<endl;
   cout<<CYAN<<"   histlist()"<<endl;
 
-    cout<<RED<<"Show all existing TCanvas"<<endl;
+  cout<<RED<<"Show all existing TCanvas"<<endl;
   cout<<CYAN<<"   canvlist()"<<endl;
+
+  cout<<RED<<"Safe way to quit the program in mac."<<endl;
+  cout<<CYAN<<"   quit()"<<endl;
     
   cout<<RESET<<endl;
 }
@@ -495,15 +589,15 @@ void help()
 void newcanvas(int ncy1,TString sctitle)
 {
   ic++;
-  ic=ic%st.ncanvas;
+  ic=ic%5;//st.ncanvas;
   ncy=ncy1;
   double w=800;
   double h=800;
   if(ncy1==1)h=400;
-  sctitle=Form("%s_%d",sctitle.Data(),ic);
-  if(ca[ic]) {
-    tlcanv->Remove(ca[ic]);
-    delete ca[ic];
+  sctitle=Form("%s_canv%d",sctitle.Data(),ic);
+  if(TCanvas *cc=(TCanvas*)gROOT->FindObject(Form("canv%d",ic))) {
+    tlcanv->Remove(cc);
+    delete cc;
   }
   ca[ic]=new TCanvas(Form("canv%i",ic),sctitle.Data(),w,h);
 
@@ -575,13 +669,14 @@ TString g(double ge, int icy1)
   TH1F *ha=(TH1F*)hg2xy->ProjectionX(sname.Data(),gea,geb);
   ha->SetTitle(stitle);
   if(!tlhist->FindObject(ha)) tlhist->Add(ha);
-  return peaks(ha);
+  peaks(ha);
+  return sname;
   
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-TString peaks(TH1 *h, Double_t thres)
+void peaks(TH1 *h, Double_t thres)
 {
   double x0=h->GetBinLowEdge(h->GetNbinsX());
   double x1=h->GetBinLowEdge(0);
@@ -606,15 +701,15 @@ TString peaks(TH1 *h, Double_t thres)
     h->Sumw2(0);
   h->SetAxisRange(ymin,ymax,"Y");
   h->SetStats(0);
-  Int_t nfound=100;
+  Int_t nfound=0;
   Int_t nloop=0;
-   while(nloop<50){
+  while(nloop<1000){
     nfound=s->Search(h,1.5,"",thres);
-    if(nfound>st.npeaks) thres += 0.005;
-    else thres -= 0.005;
+    if(nfound>st.npeaks) thres += 0.0001;
+    else thres -= 0.0001;
     if(thres<0 || abs(nfound-st.npeaks)<3 ) break;
     nloop++;
-    }
+  }
   TPolyMarker *pm=(TPolyMarker *)
                       h->GetListOfFunctions()->FindObject("TPolyMarker");
   pm->SetMarkerStyle(2);//32
@@ -622,22 +717,47 @@ TString peaks(TH1 *h, Double_t thres)
   pm->SetMarkerSize(0.5);//0.4
   Double_t *xpeaks=s->GetPositionX();
   Double_t *ypeaks=s->GetPositionY();
-  for(int j=0;j<nfound;j++) {
-   stringstream ss;
-   ss<<xpeaks[j];
-   if(ypeaks[j]<3) continue;
-   TString s1=ss.str();
-   TLatex *tex=new TLatex(xpeaks[j],ypeaks[j]+ymax*0.02,s1);
-   
-   tex->SetTextFont(133);//13
-   tex->SetTextSize(16);
-   tex->SetTextAlign(12);
-   tex->SetTextAngle(90);
-   tex->SetTextColor(kRed);
-   tex->Draw();
-   h->GetListOfFunctions()->Add(tex);
+  //to improve the accuracy of peak positions.
+  for(int i=0;i<1;i++) {
+    for(int j=0;j<nfound;j++) {
+      int binx0=h->FindBin(xpeaks[j]);
+      if(binx0>1 && binx0<xmax) {
+	float ymax=ypeaks[j];
+	float ya=h->GetBinContent(binx0-1);
+	float yb=h->GetBinContent(binx0+1);
+	if(ymax<ya){
+	  xpeaks[j]=h->GetBinCenter(binx0-1);
+	  ypeaks[j]=ya;
+	  pm->SetPoint(j,xpeaks[j],ypeaks[j]);	
+	}
+	if(ymax<yb){
+	  xpeaks[j]=h->GetBinCenter(binx0+1);
+	  ypeaks[j]=yb;
+	  pm->SetPoint(j,xpeaks[j],ypeaks[j]);    
+	}
+      }
+    }
   }
+  map<int,int> mg;
+  for(int j=0;j<nfound;j++) {
+    stringstream ss;
+    ss<<xpeaks[j];
+    if(ypeaks[j]<3) continue;
+    TString s1=ss.str();
+    TLatex *tex=new TLatex(xpeaks[j],ypeaks[j]+ymax*0.02,s1);
+    tex->SetTextFont(133);//13
+    tex->SetTextSize(16);
+    tex->SetTextAlign(12);
+    tex->SetTextAngle(90);
+    tex->SetTextColor(kRed);
+    tex->Draw();
+    h->GetListOfFunctions()->Add(tex);
+    mg.insert(make_pair(xpeaks[j],ypeaks[j]));
+  }
+  pm->Draw();
+  TLine *l1=new TLine(st.xmin,0,st.xmax,0);
+  l1->SetLineColorAlpha(kRed, 0.7);
+  l1->Draw();
   ca[ic]->Draw();
-  return h->GetName();
 }
  
