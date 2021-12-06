@@ -12,7 +12,7 @@
     - dge         2                // 开窗的范围 ge-dge到 ge+dge， 在程序内用setpeakwidth(npeaks)修改
 ```
 - 程序自动检测二维矩阵的大小
-- 常用命令,用help() 查看 
+- 用help() 查看常用命令
 - 
 ### 生成Gate2所需的二维矩阵的示例程序 （下载html文件后在本机点击查看）
 - 1.Generate gamma-gamma matrix(TH2) from a ROOT file(TTree)
