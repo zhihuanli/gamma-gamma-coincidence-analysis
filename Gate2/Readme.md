@@ -1,8 +1,8 @@
 
 # gamma-gamma两重符合分析程序 Gate2
 
-- 本程序为ROOT Script，在ROOT6环境上运行。
-- 程序实现了Radware的开窗谱的分析功能，并在标记峰位和显示方式上有所加强。
+- 程序为ROOT脚本(script)，在ROOT6环境上运行。
+- 程序实现了Radware的开窗谱分析功能，并在标记峰位和显示方式上有所加强。
 - 使用者需要对ROOT的TH1，TH2功能有一定的理解。
 - 
 
