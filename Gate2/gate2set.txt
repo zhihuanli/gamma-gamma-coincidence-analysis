@@ -1,0 +1,8 @@
+####Gate2 initial settings ####
+rootfile    hgglmatrix.root 
+histname    hg2xyp        
+ncanvas     5              
+xmin        0
+xmax        2000         
+npeaks      30                
+dge         2               

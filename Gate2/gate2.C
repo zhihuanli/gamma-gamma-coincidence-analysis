@@ -21,9 +21,9 @@ using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #define codename         "Gamma-Gamma two-fold matrix data analysis Code GATE2"
-#define author           "By Zhihuan Li,  Peking University"
+#define author           "Author: Zhihuan Li, Peking University"
 #define lastmodified     "Last modified on Dec. 4, 2021"
-#define webpage          "Find the last updates from https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/Gate2"
+#define webpage          "Find the last updates from [https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/Gate2]"
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -37,13 +37,14 @@ using namespace std;
 
 struct parameters
 {
-  int ncanvas;
-  int xmin;    //range for hist
-  int xmax;    //range for hist
-  int npeaks;  //number of peaks for TSpectrum
-  float dge1;    //gate width:ge+dge1 - ge+dge2
-  float dge2;
-  bool peak_background;//true: all negative counts will be set to 0 
+  TString rootfile;
+  TString histname;
+  int     ncanvas;
+  int     xmin;    //range for hist
+  int     xmax;    //range for hist
+  int     npeaks;  //number of peaks for TSpectrum
+  float   dge;    //gate width:ge-dge - ge+dge
+
 };
 parameters st;
 
@@ -70,8 +71,7 @@ int ih=0;
 void setncanvas(int ncanvas=5) { st.ncanvas=ncanvas; }
 void setxrange(int xmin1=xmin, int xmax1=xmax){ st.xmin=xmin1; st.xmax=xmax1;};
 void setnpeaks(int npeaks1=30) {st.npeaks=npeaks1;};
-void setgatewidth(float dgea=-2,float dgeb=2) {st.dge1=dgea; st.dge2=dgeb;};
-void setpeakbackground(bool pb=false) {st.peak_background=pb;};
+void setgatewidth(float dgea=-2,float dgeb=2) {st.dge=dgea;};
 void showSettings();
 // Show different parts of a gated-spectrum in the same window
 void gs(float ge1,int npad=4);
@@ -117,6 +117,7 @@ void canvlist(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //private functions
+bool ReadSettings(TString fname);
 //two-fold gated
 TString g(double ge=0,int icy1=1);
 void newcanvas(int ncy,TString sctitle);
@@ -127,47 +128,50 @@ void peaks(TH1 *h, Double_t thres=0.05);
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-void gate2(TString fname="hgglmatrix.root",TString sg2="hg2xyp")
+void gate2()
 {
-  TColor::SetColorThreshold(0.1);
-  cout<<endl;
-  cout<< CYAN<<codename <<endl;
-  cout<< YELLOW<<author <<endl;
-  cout<< YELLOW<<lastmodified <<endl;
-  cout<< YELLOW<<webpage <<endl;
-  cout<< RESET<<endl;
-  if(f==NULL) {
-    f=new TFile(fname);
-    cout<<GREEN<<"ROOT file: "<<fname<<RESET<<endl;
-  }
-
 #if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
   cout<<"This code is valid only for  ROOT6 !"<<endl;
   gApplication->Terminate(0);
 #endif
-
-  //two-fold
-  // hg2xy=(TH2*)f->Get(sg2.Data());
-
+#ifdef R__WIN32
+  cout<<"win32"<<endl;
+#endif
   
-  if(!(hg2xy=(TH2*)f->Get(sg2.Data()))) {
-    cout<<RED<<"ERROR!  No 2D-histogram in "<<fname<<" is detected !"<<RESET<<endl;
+#ifdef R__UNIX
+  cout<<"LINUX"<<endl;
+#endif
+
+#ifdef R__HAS_COCOA
+  cout<<"MAC COCOA"<<endl;
+#endif  
+  TColor::SetColorThreshold(0.1);
+  cout<<endl;
+  cout<< CYAN<<codename <<endl;
+  cout<< BLUE<<author <<endl;
+  cout<< BLUE<<lastmodified <<endl;
+  cout<< BLUE<<webpage <<endl;
+  cout<< RESET<<endl;
+  bool bvalid=ReadSettings("gate2set.txt");
+  if(!bvalid)  gApplication->Terminate(0);
+  if(gSystem->AccessPathName(st.rootfile.Data())){
+    cout <<RED<<"ROOT file: "<<st.rootfile.Data()<<" does not exist" << endl;
+    gApplication->Terminate(0);
+  } 
+  TFile *f=new TFile(st.rootfile.Data());
+  if(!(hg2xy=(TH2*)f->Get(st.histname.Data()))) {
+    cout<<RED<<"ERROR!  No 2D-histogram in "<<st.rootfile.Data()<<" is detected !"<<RESET<<endl;
      gApplication->Terminate(0);
   }
-  else cout<<GREEN<<"2D-histogram: "<<sg2.Data()<<endl;
   hg2x=(TH1*) hg2xy->ProjectionX("hg2x");
   
   xmax=hg2x->GetBinCenter(hg2x->GetXaxis()->GetNbins());
-  cout<<GREEN<<Form("Range of X/Y: %d - %d ",xmin,xmax)<<RESET<<endl<<endl;
-
   
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-  setncanvas(5);
-  setnpeaks(30);
-  setxrange(xmin,xmax);
-  setgatewidth(-2,2);
-  setpeakbackground(0);//
-
+  setncanvas(st.ncanvas);
+  setxrange(st.xmin,st.xmax);
+  setnpeaks(st.npeaks);
+  setgatewidth(st.dge);
   showSettings();
   cout<<RED<<"help() for short instructions "<<RESET<<endl<<endl;
   
@@ -511,11 +515,15 @@ void saveCanvAll(TString sfile)
 
 void showSettings()
 {
-  cout<<RED<<"Current parameter settings:"<<endl;
+
+  cout<<GREEN<<"ROOT file: " <<st.rootfile.Data()<<endl;
+  cout<<GREEN<<"2D-histogram: "<<st.histname.Data()<<endl;
+  cout<<GREEN<<Form("Range of X/Y: %d - %d ",xmin,xmax)<<RESET<<endl<<endl;
+  cout<<RED<<"Current settings:"<<endl;
   cout<<CYAN<<"ncanvas = "<<st.ncanvas<<endl;
   cout<<CYAN<<"xmin = "<<st.xmin<<", xmax= "<<st.xmax<<endl;
   cout<<CYAN<<"npeaks = "<<st.npeaks<<endl;
-  cout<<CYAN<<"dge1 = "<<st.dge1<<", dge2= "<<st.dge2<<endl;
+  cout<<CYAN<<"dge = "<<st.dge<<endl;
   cout<<RESET<<endl;
 }
 
@@ -529,10 +537,10 @@ void help()
 {
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
   cout<< RED<<"Setup, "<<RED<<"changes will take effect for the next drawing."<<endl;
-  cout<< CYAN<< "   setxrange(int xmin1, int xmax1)        - Change range of x-axis."<<endl;
-  cout<< "   setnpeaks(int npeaks1=30)              - Change the number of peaks marked."<<endl;
+  cout<< CYAN<< "   setxrange(int xmin1, int xmax1)        - Change the viewing range of x-axis for all histograms."<<endl;
+  cout<< "   setnpeaks(int npeaks1=30)              - Change the number of peaks marked in a histogram."<<endl;
   cout<< "   setncanvas(int ncanvas=5)              - Change the maximum number of canvas avaliable."<<endl;
-  cout<< "   setgatewidth( int dgea=-2, int dgeb=2) - Change range of gate to peak-dgea to peak+dgea."<<endl;
+  cout<< "   setgatewidth(int dge=2)                - Change range of gate to peak-dge to peak+dge."<<endl;
   cout<< "   showSettings()                         - Show current parameter settings."<<endl;
   
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
@@ -585,7 +593,35 @@ void help()
   cout<<RESET<<endl;
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//private functions 
+//private functions
+bool ReadSettings(TString fname)
+{
+  //####Gate2 initial settings ####
+  //rootfile    hgglmatrix.root 
+  //histname    hg2xyp        
+  //ncanvas     5              
+  //xmin        0
+  //xmax        4000         
+  //npeaks      30                
+  //dge         2               
+
+  ifstream fset(fname.Data());
+  if(!fset.good()) {
+    cout<<fname.Data()<<" does not exist!"<<endl;
+    return false;
+  }
+  string stmp;
+  char ctmp[1000];
+  getline(fset,stmp);
+  fset>>stmp>>st.rootfile;
+  fset>>stmp>>st.histname;
+  fset>>stmp>>st.ncanvas;
+  fset>>stmp>>st.xmin;
+  fset>>stmp>>st.xmax;
+  fset>>stmp>>st.npeaks;
+  fset>>stmp>>st.dge;
+  return true;
+}
 void newcanvas(int ncy1,TString sctitle)
 {
   ic++;
@@ -610,6 +646,7 @@ void newcanvas(int ncy1,TString sctitle)
   }
   ca[ic]->ToggleEventStatus();
   tlcanv->Add(ca[ic]);
+    ((TRootCanvas *)ca[ic]->GetCanvasImp())->DontCallClose();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -658,11 +695,11 @@ TString g(double ge, int icy1)
   else icy=icy1;
   ca[ic]->cd(icy);
 
-  int gea=hg2xy->GetXaxis()->FindBin(ge+st.dge1);
-  int geb=hg2xy->GetXaxis()->FindBin(ge+st.dge2);
+  int gea=hg2xy->GetXaxis()->FindBin(ge-st.dge);
+  int geb=hg2xy->GetXaxis()->FindBin(ge+st.dge);
   if(gea<xmin) gea=xmin;
   if(geb>xmax) geb=xmax;
-  TString stitle=Form("Gated on %.1f keV (%.1f - %.1f)",ge,ge+st.dge1,ge+st.dge2);
+  TString stitle=Form("Gated on %.1f keV (%.1f - %.1f)",ge,ge-st.dge,ge+st.dge);
   
   TString sname=GetHistName(Form("g%d",int(ge)));
  
@@ -690,15 +727,8 @@ void peaks(TH1 *h, Double_t thres)
   h->GetYaxis()->SetNoExponent();
   h->SetLineColor(kBlue);
   h->SetFillColorAlpha(kCyan,0.15);
-  TSpectrum *s=new TSpectrum(500);
-  /*
-  if(st.peak_background) {
-    for(int i=1;i<=h->GetNbinsX();i++) //set bins with negative counts to zero
-       if(h->GetBinContent(i)<0)  h->SetBinContent(i,0);
-      TH1F *hb=(TH1F*)s->Background(h,5,"same");
-      h->Add(h,hb,1,-1);
-      }*/
-    h->Sumw2(0);
+  TSpectrum *s=new TSpectrum(1000);
+  h->Sumw2(0);
   h->SetAxisRange(ymin,ymax,"Y");
   h->SetStats(0);
   Int_t nfound=0;
