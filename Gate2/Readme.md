@@ -26,7 +26,7 @@ dge         2                // 开窗的范围 ge-dge到 ge+dge， 在程序内
 ```
 - 在命令行运行
 ```cpp
-    root -l gate2.C
+root -l gate2.C
 ```
 - 程序自动检测二维矩阵的大小
 - 用help() 查看常用命令
