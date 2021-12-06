@@ -11,9 +11,13 @@
     - npeaks      30               // 标记gamma峰位的最大数目， 在程序内用setnpeaks(npeaks)修改
     - dge         2                // 开窗的范围 ge-dge到 ge+dge， 在程序内用setpeakwidth(npeaks)修改
 ```
+- 在命令行运行
+```cpp
+root -l gate2.C
+```
 - 程序自动检测二维矩阵的大小
 - 用help() 查看常用命令
-- 
+
 ### 生成Gate2所需的二维矩阵的示例程序 （下载html文件后在本机点击查看）
 - 1.Generate gamma-gamma matrix(TH2) from a ROOT file(TTree)
     - <https://zhihuanli.github.io/gamma-gamma-coincidence-analysis/blob/master/Gate2/root2hist.html>
