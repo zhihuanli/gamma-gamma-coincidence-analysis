@@ -5,12 +5,12 @@
 - 程序实现了Radware的开窗谱分析功能，并在标记峰位和显示方式上有所加强。
 - 使用者需要对ROOT的TH1，TH2功能有一定的理解。
 
-### 生成Gate2所需二维矩阵的示例程序 （下载html文件后在本机点击查看）
+### 生成Gate2所需二维矩阵的示例程序 
 
 - 1.Generate gamma-gamma matrix(TH2) from a ROOT file(TTree)
-  - <https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/root2hist.html>
+  - <https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/root2hist.ipynb>
 - 2.Generate background subtructed gamma-gamma matrix using Radware approch
-  - <https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/hist2radware.html>
+  - <https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/hist2radware.ipynb>
 
 ### Gate2 使用方法
 
