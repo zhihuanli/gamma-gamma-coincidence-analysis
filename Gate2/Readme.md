@@ -8,9 +8,9 @@
 ### 生成Gate2所需二维矩阵的示例程序 （下载html文件后在本机点击查看）
 
 - 1.Generate gamma-gamma matrix(TH2) from a ROOT file(TTree)
-  - <https://zhihuanli.github.io/gamma-gamma-coincidence-analysis/blob/master/Gate2/root2hist.html>
+  - <https:https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/root2hist.html>
 - 2.Generate background subtructed gamma-gamma matrix using Radware approch
-  - <https://zhihuanli.github.io/gamma-gamma-coincidence-analysis/blob/master/Gate2/hist2radware.html>
+  - <https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/edit/master/Gate2/hist2radware.html>
 
 ### Gate2 使用方法
 
