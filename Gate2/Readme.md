@@ -15,9 +15,9 @@
     ```
    - 方法2：编译成.so文件运行，速度比方法1有显著提升。
    ```cpp
-    root [0] .L r2ghist.C++ // 编译生成r2g2hist_C.so
-    root [1] gSystem->Load("r2g2hist_C.so")
-    root [1] r2ghist()
+    root [0] .L r2ghist.C++                 //编译生成r2g2hist_C.so
+    root [1] gSystem->Load("r2g2hist_C.so") //载入内存
+    root [1] r2ghist()                      //运行
    ```
     - 生成r2g2hist_C.so
 - 2.[gate2matrix.C: Generate background subtructed gg-matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
