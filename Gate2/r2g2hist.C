@@ -1,6 +1,5 @@
 // Make 2-fold gg-matrix(TH2) from ROOT files(TTree) 
 // Author: Li Zhihuan, Peking University
-// > root -l r2g2hist.C
 
 #include "TFile.h"
 #include "TTree.h"
@@ -8,10 +7,12 @@
 #include "TH2.h"
 #include "TString.h"
 #include "TROOT.h"
+#include "TSystem.h"
 #include <iostream>
 #include <ctime>
 
 using namespace std;
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo.
 
 //range of runid
 int RunIdStart = 5;
@@ -29,16 +30,20 @@ float dgt=18;//coincidence time window.
 int nBin = 4000;
 int MaxE = 4000;
 TString fOutName="g2hist.root";
-TH1I *h2x=new TH1I("h2x","h2x",nBin,0,MaxE);
-TH2I *h2xy=new TH2I("h2xy","h2xy",nBin,0,MaxE,nBin,0,MaxE);
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo.
+TH1I *h2x;
+TH2I *h2xy;
+clock_t start,stop;
 
 int root2g2hist(int run);
 
 void r2g2hist()
 {
-    clock_t start,end;
-    start = clock();
 
+    start = clock();
+    h2x=new TH1I("h2x","h2x",nBin,0,MaxE);
+    h2xy=new TH2I("h2xy","h2xy",nBin,0,MaxE,nBin,0,MaxE);
     for(int i=RunIdStart;i<=RunIdStop;i++)
         root2g2hist(i);//tree to TH
 
@@ -46,9 +51,10 @@ void r2g2hist()
     h2x->Write();
     h2xy->Write();
     fout->Close();
+    cout<<"Write Histgrams to "<<fOutName.Data()<<endl;
 
-    end=clock();
-    double seconds=(double)(end-start)/CLOCKS_PER_SEC;
+    stop=clock();
+    double seconds=(double)(stop-start)/CLOCKS_PER_SEC;
     cout<<"Time taken by program is : "<<seconds<<" seconds."<<endl;
 }
 
@@ -59,6 +65,8 @@ int root2g2hist(int run)
       cout <<Form(fNameFormat.Data(),run)<< " does not exist!" <<endl;
       return 0;
     }
+    start = clock();
+
     TFile *f=new TFile(Form(fNameFormat.Data(),run)); 
     TTree *tree=(TTree*) f->Get(treeName.Data());
     int ghit;
@@ -83,5 +91,8 @@ int root2g2hist(int run)
             }
         }
     }
+
+    double seconds=(double)(stop-start)/CLOCKS_PER_SEC;
+    cout<<run<<", "<<nentries<<", "<<seconds<<" seconds."<<endl;
     return 1;
 }
