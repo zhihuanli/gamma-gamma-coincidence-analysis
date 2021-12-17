@@ -7,8 +7,20 @@
 
 ### 生成Gate2所需二维矩阵的示例程序 
 
-- 1.[Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
-- 2.[Generate background subtructed gg-matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
+- 1.[r2ghist.C : Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
+   - 编辑程序内的相关参数，保存后运行。
+   - 方法1： 
+   ```cpp
+    root -l r2ghist.C
+    ```
+   - 方法2：编译成.so文件运行，速度比方法1有显著提升。
+   ```cpp
+    root [0] .L r2ghist.C++ // 编译生成r2g2hist_C.so
+    root [1] gSystem->Load("r2g2hist_C.so")
+    root [1] r2ghist()
+   ```
+    - 生成r2g2hist_C.so
+- 2.[gate2matrix.C: Generate background subtructed gg-matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
 
 ### Gate2 使用方法
 
