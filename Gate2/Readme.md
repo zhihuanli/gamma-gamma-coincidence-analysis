@@ -1,14 +1,14 @@
 
 # gamma-gamma两重符合分析程序 Gate2
 
-- 程序为ROOT脚本(script)，在ROOT6环境上运行。
 - 程序实现了Radware的开窗谱分析功能，并在标记峰位和显示方式上有所加强。
+- 程序为ROOT脚本(script)，需在ROOT6环境上运行。
 - 使用者需要对ROOT的TH1，TH2功能有一定的理解。
 
 ### 生成Gate2所需二维矩阵的示例程序 
 
-- 1.[Generate gamma-gamma matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
-- 2.[Generate background subtructed gamma-gamma matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
+- 1.[Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
+- 2.[Generate background subtructed gg-matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
 
 ### Gate2 使用方法
 
