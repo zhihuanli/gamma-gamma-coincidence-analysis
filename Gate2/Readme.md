@@ -31,11 +31,11 @@
    int MaxE = 4000;
    TString fOutName="g2hist.root";
    ```
-   - 方法1： 
+   - 运行方法1： 
    ```cpp
     root -l r2ghist.C
     ```
-   - 方法2：编译成.so文件运行，速度比方法1有显著提升。
+   - 运行方法2：编译成.so文件运行。相比于方法1，运行速度有显著提升。
    ```cpp
     root [0] .L r2ghist.C++                 //编译生成r2g2hist_C.so
     root [1] gSystem->Load("r2g2hist_C.so") //载入内存
