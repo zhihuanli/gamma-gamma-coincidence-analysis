@@ -2,7 +2,7 @@
 # gamma-gamma两重符合分析程序 Gate2
 
 - [gate2.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2.C)
-
+- [tutorial](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2.ipynb)
 - 程序实现了Radware的开窗谱分析功能，并在标记峰位和显示方式上有所加强。
 - 程序为ROOT脚本(script)，需在ROOT6环境上运行。
 - 使用者需要对ROOT的TH1，TH2功能有一定的理解。
