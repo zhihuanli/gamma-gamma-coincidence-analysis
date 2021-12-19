@@ -9,7 +9,7 @@
 
 ### 生成Gate2所需二维矩阵的示例程序 
 
-- 1.[r2ghist.C : Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
+- 1.[r2ghist.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
    - 功能：程序将所有gamma关联事件保存成二维对称gamma-gamma矩阵
    - 输入文件：需要将gamma探测器相关信息以hit格式保存到ROOT文件
    - 编辑程序内的相关参数，保存后运行。
@@ -42,7 +42,8 @@
     root [1] r2ghist()                      //运行
    ```
     - 生成r2g2hist_C.so
-- 2.[gate2matrix.C: Generate background subtructed gg-matrix using Radware approch](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
+- 2.[gate2matrix.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
+  - 功能：生成减本底的gamma-gamma矩阵
 
 ### Gate2 使用方法
 
