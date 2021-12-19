@@ -10,7 +10,7 @@
 ### 生成Gate2所需二维矩阵的示例程序 
 
 - 1.[r2ghist.C : Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
-   - 将gamma探测器事件整理成hit格式保存到ROOT文件
+   - 将gamma探测器相关信息以hit格式保存到ROOT文件
    - 编辑程序内的相关参数，保存后运行。
    ```cpp
    //range of runid
