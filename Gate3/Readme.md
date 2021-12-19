@@ -54,13 +54,13 @@ root -l gate3.C
    showSettings()                         //- Show current parameter settings.
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //Show gated-spectra
-   gm(float ge0a, float ge0b, [float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b] )
-   gm(TH1* h1, [TH1* h2],[TH1* h3],[TH1* h4])
+   g2m(float ge0a, float ge0b, [float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b] )
+   g2m(TH1* h1, [TH1* h2],[TH1* h3],[TH1* h4])
 //Show total projection sepctrum.
    tpjm(int npad)
 //Show gated spectra with specified the x-axis range.
-   gmxr(int xmin,int xmax,float ge0a, float ge0b, [float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b])
-   gmxr(int xmin,int xmax,TH1* h1, [TH1* h2], ...)
+   g2mxr(int xmin,int xmax,float ge0a, float ge0b, [float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b])
+   g2mxr(int xmin,int xmax,TH1* h1, [TH1* h2, TH1*h3, TH1*h4)
    tpjmxr(int xmin,int xmax,int npad)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //Save a hist to a ROOT file with append mode
