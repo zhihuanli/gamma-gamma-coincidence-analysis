@@ -11,6 +11,24 @@
    - 功能：程序将所有三重或三重以上gamma关联事件保存成一系列二维对称gamma-gamma矩阵
    - 输入文件：gamma探测器相关信息以hit格式保存到ROOT文件
    - 编辑程序内的相关参数，保存后运行。
+   ```cpp
+   //range of runid
+   int RunIdStart = 5;
+   int RunIdStop =  78;//78
+   //input
+   TString fNameFormat = "./data/test%04d.root";//Path+filename, %04d: xxx0005.root for runid=5;
+   TString treeName="t";
+   //gamma Tree Branches in the input file
+   TString ghitBranch="nGammaOneEventAddBack";//hit
+   TString geBranch="nGammaEnergyAddBack";//ge[hit]
+   TString gtBranch="nGammaTimeAddBack";//gt[hit]
+
+   float dgt=18;//coincidence time window.
+   //output
+   int nBin = 2000;
+   int MaxE = 2000;
+   TString fOutName="g3hist.root";
+   ```
    - 方法1： 
    ```cpp
     root -l r2g3hist.C
