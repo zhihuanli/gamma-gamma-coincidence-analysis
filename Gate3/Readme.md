@@ -7,7 +7,7 @@
 
 ### 生成Gate3所需二维矩阵的示例程序 
 
-- 1.[r2g3hist.C : Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/r2g3hist.C)
+- 1.[r2g3hist.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/r2g3hist.C)
    - 功能：程序将所有三重或三重以上gamma关联事件保存成一系列二维对称gamma-gamma矩阵
    - 输入文件：gamma探测器相关信息以hit格式保存到ROOT文件
    - 编辑程序内的相关参数，保存后运行。
@@ -39,7 +39,8 @@
     root [1] gSystem->Load("r2g3hist_C.so") //载入内存
     root [1] r3ghist()                      //运行
    ```
-- 2.[gate3histbkg.C: Generate the background spectrum for gate3.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3histbkg.C)
+- 2.[gate3histbkg.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3histbkg.C)
+   - 功能：生成一维投影谱的本底谱
 
 ### Gate3 使用方法
 
