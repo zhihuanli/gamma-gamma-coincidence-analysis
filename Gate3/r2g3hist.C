@@ -30,7 +30,7 @@ float dgt=18;//coincidence time window.
 //output
 int nBin = 2000;
 int MaxE = 2000;
-TString fOutName="g3hist.root";
+TString fOutName="gate3matrix.root";
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 TH1I *h3x;
