@@ -1,5 +1,5 @@
 ####Gate3 initial settings ####
-g3File      g3hist.root 
+g3File      gate3matrix.root 
 prefixHist  h3xy
 g3BkgFile   g3histbkg.root
 xyHist      h3xy
