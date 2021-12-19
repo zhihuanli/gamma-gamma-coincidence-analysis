@@ -1,0 +1,12 @@
+####Gate3 initial settings ####
+g3File      g3hist.root 
+prefixHist  h3xy
+g3BkgFile   g3histbkg.root
+xyHist      h3xy
+xHist       h3x
+xBkgHist    h3xb        
+ncanvas     5              
+xmin        0
+xmax        2000         
+npeaks      30                
+dge         2               
