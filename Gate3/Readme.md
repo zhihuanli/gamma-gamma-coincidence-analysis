@@ -1,6 +1,6 @@
 
 # gamma-gamma-gamma 三重符合分析程序 Gate3
-- [gate3.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3.C) - [tutorial](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate3.ipynb)
+- [gate3.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3.C) - [tutorial](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3.ipynb)
 - 程序实现了Radware的三重符合开窗谱分析功能，并在标记峰位和显示方式上有所加强。
 - 程序为ROOT脚本(script)，需在ROOT6环境上运行。
 - 使用者需要对ROOT的TH1，TH2功能有一定的理解。
