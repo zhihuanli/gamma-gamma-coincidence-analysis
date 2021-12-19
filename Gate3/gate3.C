@@ -24,10 +24,10 @@
 using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#define codename         "Gamma-Gamma three-fold matrix data analysis Code GATE3"
+#define codename         "Gamma-Gamma-Gamma three-fold matrix data analysis Code GATE3"
 #define author           "Author: Zhihuan Li, Peking University"
 #define lastmodified     "Last modified on Dec. 18, 2021"
-#define webpage          "Find the last updates from [https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/Gate2]"
+#define webpage          "Find the last updates from [https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/tree/master/Gate3]"
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -89,7 +89,7 @@ void g2m(float ge0a,float ge0b,float ge1a=-1,float ge1b=-1,
 void g2m(TH1* h1, TH1 *h2=NULL, TH1 *h3=NULL, TH1 *h4=NULL);
 
 void g2mxr(int xmin,int xmax,float ge0a,float ge0b,
-	   float ge1a=-1,float ge1b=-1, float ge2a=-1,float ge2c=-1, float ge3a=-1, float ge3b=-1);
+	   float ge1a=-1,float ge1b=-1, float ge2a=-1,float ge2b=-1, float ge3a=-1, float ge3b=-1);
 void g2mxr(int xmin,int xmax,TH1* h1, TH1 *h2=NULL, TH1 *h3=NULL, TH1 *h4=NULL);
 //total projection sepctra
 void tpjm(int npad=3);
@@ -167,7 +167,7 @@ void gate3()
      cout<<RED<<"ERROR!  No histograms in "<<st.g3bkgfile.Data()<<" is detected !"<<RESET<<endl;
      gApplication->Terminate(0);
   }
-    xmax=hg3x->GetBinCenter(hg3x->GetXaxis()->GetNbins());
+  xmax=hg3x->GetBinCenter(hg3x->GetXaxis()->GetNbins());
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
   setncanvas(st.ncanvas);
   setxrange(st.xmin,st.xmax);
@@ -386,9 +386,9 @@ void saveCanvAll(TString sfile)
 void showSettings()
 {
 
-  cout<<GREEN<<"g3hist ROOT file: " <<st.g3file.Data()<<endl;
-  cout<<GREEN<<"g3bkghist ROOT file: "<<st.g3bkgfile.Data()<<endl;
-  cout<<GREEN<<Form("Range of X/Y: %d - %d ",xmin,xmax)<<RESET<<endl<<endl;
+  cout<<GREEN<<"g3hist ROOT file: " <<st.g3file.Data()<<endl; 
+  cout<<GREEN<<"g3histbkg ROOT file: "<<st.g3bkgfile.Data()<<endl;
+  cout<<GREEN<<Form("Range of X/Y/Z: %d - %d ",xmin,xmax)<<RESET<<endl<<endl;
   cout<<RED<<"Current settings:"<<endl;
   cout<<CYAN<<"ncanvas = "<<st.ncanvas<<endl;
   cout<<CYAN<<"xmin = "<<st.xmin<<", xmax= "<<st.xmax<<endl;
@@ -414,14 +414,14 @@ void help()
   cout<< "   showSettings()                         - Show current parameter settings."<<endl;
   
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
-  cout<<CYAN<<  "   g2(float ge1, float ge2)"<<endl;
-  cout<<CYAN<< "   gm(TH1* h1, [TH1* h2],[TH1* h3],[TH1* h4])"<<endl;
+  cout<<CYAN<<  "  g2m(float ge0a, float ge0b,[float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b])"<<endl;
+  cout<<CYAN<< "   g2m(TH1* h1, [TH1* h2],[TH1* h3],[TH1* h4])"<<endl;
   cout<<RED<< "Show total projection sepctrum."<<endl;
   cout<<CYAN<< "   tpjm(int npad)"<<endl;
 
   cout<<RED<<"Show gated spectra with specified the x-axis range."<<endl;
-  cout<<CYAN<<  "   g2xr(int xmin,int xmax,double ge1, double ge2)"<<endl;
-  cout<<CYAN<<  "   gmxr(int xmin,int xmax,TH1* h1, [TH1* h2], ...)"<<endl;
+  cout<<CYAN<<  "   g2mxr(int xmin,int xmax,float ge0a, float ge0b,[float ge1a, float ge1b,float ge2a, float ge2b,float ge3a, float ge3b]))"<<endl;
+  cout<<CYAN<<  "   g2mxr(int xmin,int xmax,TH1* h1, [TH1* h2,TH1* h3,TH1*h4])"<<endl;
   cout<<CYAN<< "   tpjmxr(int xmin,int xmax,int npad)"<<endl;
 
   cout<<YELLOW<<"....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......"<<endl;
@@ -538,8 +538,9 @@ void tpj(int icy)
   if(icy>ncy) icy=ncy;
   ca[ic]->cd(icy);
   TString stitle=Form("Total Projection Sepctrum (%d - %d) keV ",st.xmin,st.xmax);
-  TString sname=GetHistName("gtpj");   
-  TH1F *h=(TH1F*)hg3xy->ProjectionX(sname.Data(),xmin,xmax);
+  TString sname=GetHistName("gtpj");
+  TH1I *h=(TH1I*)hg3x->Clone(sname.Data());
+  h->Add(h,hg3xb,1,-1);
   h->SetTitle(stitle.Data());
   if(!tlhist->FindObject(h)) tlhist->Add(h);
   peaks(h);
