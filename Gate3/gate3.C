@@ -452,7 +452,7 @@ void help()
 bool ReadSettings(TString fname)
 {
   // ####Gate3 initial settings ####
-  // g3file      g3hist.root 
+  // g3file      gate3matrix.root 
   // prefixHist  h3xy
   // g3bkgfile   g3bkg.root
   // xyhist      h3xy
