@@ -57,7 +57,7 @@
 
 - 编辑gate2set.txt
 ```cpp
-rootfile    hgglmatrix.root  //输入文件
+rootfile    gate2matrix.root  //输入文件
 histname    hg2xyp           //二维矩阵名称
 ncanvas     5                // 最大显示窗口(TCanvas)的数目，一般不用修改， 在程序内用setncanvas(ncanvas)修改
 xmin        0                // 最小显示范围， 在程序内用setxrange(xmin,xmax)修改
