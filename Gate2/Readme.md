@@ -11,6 +11,24 @@
 
 - 1.[r2ghist.C : Make gg-matrix(TH2) from a ROOT file(TTree)](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
    - 编辑程序内的相关参数，保存后运行。
+   ```cpp
+   //range of runid
+   int RunIdStart = 5;
+   int RunIdStop = 78;
+   //input
+   TString fNameFormat = "./data/test%04d.root";//Path+filename, %04d: xxx0005.root for runid=5;
+   TString treeName="t";
+   //gamma Tree Branches in the input file
+   TString ghitBranch="nGammaOneEventAddBack";//hit
+   TString geBranch="nGammaEnergyAddBack";//ge[hit]
+   TString gtBranch="nGammaTimeAddBack";//gt[hit]
+
+   float dgt=18;//coincidence time window.
+   //output
+   int nBin = 4000;
+   int MaxE = 4000;
+   TString fOutName="g2hist.root";
+   ```
    - 方法1： 
    ```cpp
     root -l r2ghist.C
