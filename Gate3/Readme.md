@@ -19,7 +19,7 @@
     root [1] gSystem->Load("r2g3hist_C.so") //载入内存
     root [1] r3ghist()                      //运行
    ```
-- 2.[gate3bkg.C: Generate the background spectrum for gate3.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate3bkg.C)
+- 2.[gate3bkg.C: Generate the background spectrum for gate3.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3bkg.C)
 
 ### Gate3 使用方法
 
