@@ -20,7 +20,7 @@
 using namespace std;
 
 //input 
-TString fInName = "g3hist.root";//root file 
+TString fInName = "gate3matrix.root";//root file 
 TString h2name = "h3xy";//xy projection 
 TString h1name = "h3x"; // x projection 
 //output 
