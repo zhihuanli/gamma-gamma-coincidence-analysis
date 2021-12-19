@@ -10,7 +10,7 @@
 ### 生成Gate2所需二维矩阵的示例程序 
 
 - 1.[r2ghist.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/r2g2hist.C)
-   - 功能：程序将所有gamma关联事件保存成二维对称gamma-gamma矩阵
+   - 功能：程序将两重或两重以上的gamma关联事件保存成二维对称gamma-gamma矩阵
    - 输入文件：需要将gamma探测器相关信息以hit格式保存到ROOT文件
    - 编辑程序内的相关参数，保存后运行。
    ```cpp
