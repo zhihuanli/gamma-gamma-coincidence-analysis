@@ -39,7 +39,7 @@
     root [1] gSystem->Load("r2g3hist_C.so") //载入内存
     root [1] r3ghist()                      //运行
    ```
-- 2.[gate3histbkg.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/gate3histbkg.C)
+- 2.[g3histbkg.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate3/g3histbkg.C)
    - 功能：生成一维投影谱的本底谱
 
 ### Gate3 使用方法
