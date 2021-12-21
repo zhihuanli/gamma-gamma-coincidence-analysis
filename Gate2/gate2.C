@@ -10,7 +10,11 @@
 #include "TColor.h"
 #include "TPolyMarker.h"
 #include "TApplication.h"
+#include "TSystem.h"
 #include "TROOT.h"
+#include "TRootCanvas.h"
+#include "TLine.h"
+
 #include <map>
 #include <algorithm>
 #include <fstream>
@@ -274,7 +278,7 @@ void gm(float ge1,float ge2,float ge3,float ge4)
 {
   int npad=0;
   double ge[4]={ge1,ge2,ge3,ge4};
-  for(int i=0;i<6;i++) 
+  for(int i=0;i<4;i++) 
     if(ge[i]>1) npad++;
   TString sctitle=Form("gm(%.1f",ge[0]);
   for(int i=1;i<4;i++) 
@@ -382,7 +386,7 @@ void gadd(float ge1, float ge2, float ge3, float ge4, float ge5, float ge6)
 {
   if(ge1==0 || ge2==0) {
     cout<<"At least two gates should be specified !"<<endl;
-    return "error";
+    return;
   }
   int npad=0;
   TH1F *ha[6];
@@ -430,7 +434,7 @@ void gsub(float ge1, float ge2, float ge3, float ge4)
 
   if(ge1==0 || ge2==0) {
     cout<<"At least two gates should be specified !"<<endl;
-    return "error";
+    return;
   }
   int npad=0;
   TH1F *ha[4];
