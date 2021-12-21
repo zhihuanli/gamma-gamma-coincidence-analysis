@@ -42,7 +42,7 @@
    ```
     - 生成r2g2hist_C.so
 - 2.[gate2matrix.C](https://github.com/zhihuanli/gamma-gamma-coincidence-analysis/blob/master/Gate2/gate2matrix.C)
-  - 功能：生成减本底的gamma-gamma矩阵
+  - 功能：从上述二维矩阵，生成减本底的gamma-gamma矩阵
   - 修改参数，保存后运行
   ```cpp
   //input 
