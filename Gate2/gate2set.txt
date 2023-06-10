@@ -3,6 +3,6 @@ rootfile    hgglmatrix.root
 histname    hg2xyp        
 ncanvas     5              
 xmin        0
-xmax        2000         
+xmax        2048         
 npeaks      30                
 dge         2               

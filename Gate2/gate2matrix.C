@@ -17,7 +17,6 @@
 #define RESET   "\033[0m"
 #define RED     "\033[31m"      /* Red */
 using namespace std;
-
 //input 
 TString fInName = "g2hist.root";//root file 
 TString h2name = "h2xy";//gg-matrix 
@@ -74,7 +73,7 @@ void genBackground(int res)
   hg2xb->Draw("same");
   hg2xp->Add(hg2x,hg2xb,1,-1); 
   cout<<endl;
-cout<<RED<<"(1).If the shape of the background spectrum looks OK, then run gate2matrix() "<<endl;
+cout<<RED<<"(1).If the shape of the background spectrum looks OK, then run gate2mat() "<<endl;
 cout<<"(2).If not then run genBackground(res) with modified res value until the (1) is meet." <<RESET<<endl;
 }
 
